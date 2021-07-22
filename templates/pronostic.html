@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Tabla resultado -->
+<div class="d-flex col-lg-12 col-xl-12">
+    <div class="flex-fill w-100 card shadow-sm">
+        <div class="card-header">
+            <div class="card-actions float-right">
+                <div class="dropdown"><a aria-haspopup="true" class="" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="19" cy="12" r="1"></circle>
+                            <circle cx="5" cy="12" r="1"></circle>
+                        </svg>
+                    </a>
+                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Action</button>
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Another Action</button>
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Something else here
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h5 class="mb-0 card-title">Clasificación simulada</h5>
+        </div>
+        <!-- render dataframe -->
+        {% for table in tables %}
+        {{ table|safe }}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
