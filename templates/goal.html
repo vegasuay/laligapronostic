@@ -1,32 +1,302 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- card equipos -->
 <div class="card-deck mb-2 text-center">
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Home</h4>
+    <div class="card {{'border-success' if data.puntos_local > data.puntos_visita }} mb-4 shadow-sm">
+        <div class="card-header {{'headerWin' if data.puntos_local > data.puntos_visita }}">
+            <h4 class="my-0 font-weight-normal">
+                <img src="../static/images/{{data.home}}.png">
+                Equipo Local</h4>
         </div>
         <div class="card-body">
-            <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+            <h1 class="card-title pricing-card-title">
+                {{data.home}} <small class="text-muted">/ 12</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-                <li>10 users included</li>
+                <li>10 wins / 5 Lost</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
         </div>
     </div>
 
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Visit</h4>
+    <div class="card {{'border-success' if data.puntos_visita > data.puntos_local }} mb-4 shadow-sm">
+        <div class="card-header {{'headerWin' if data.puntos_visita > data.puntos_local }}">
+            <h4 class="my-0 font-weight-normal">
+                <img src="../static/images/{{data.visit}}.png">
+                Equipo Visitante</h4>
         </div>
         <div class="card-body">
-            <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+            <h1 class="card-title pricing-card-title">{{data.visit}} <small class="text-muted">/ 3</small></h1>
             <ul class="list-unstyled mt-3 mb-4">
-                <li>20 users included</li>
+                <li>20 wins / Lost</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
         </div>
     </div>
+</div>
 
+<div class="d-flex align-items-center mb-3">
+    <i class="material-icons text-primary mr-3 h3">filter_1</i>
+    <h3 class="mb-0">Estadisticas Globales Goles Marcados/Recibidos como Local/Visitante</h3>
+</div>
+
+<!-- Estadisticas -->
+<div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow-sm">
+    <div class="row">
+        <div class="col-md-3 position-relative">
+            <div class="text-center">
+                <h5 class="mt-3">Media Goles Marcados como Local <b>{{data.home}}</b></h5>
+                <hr>
+                <h1 class="text-gradient text-primary">
+                    <span id="state1" countto="300">{{data.m_marcados_encasa}}</span>
+                    <span class="text-totales">/ {{data.tm_marcados_encasa}}</span>
+                </h1>
+
+                <p class="text-sm">
+                    Valor de la media de goles marcados por el equipo local en su campo en las últimas 5 temporadas, y
+                    la media de goles en local de todos los equipo
+                </p>
+            </div>
+            <hr class="vertical dark">
+        </div>
+        <div class="col-md-3 position-relative">
+            <div class="text-center">
+                <h5 class="mt-3">Media Goles Recibidos como Local <b>{{data.home}}</b></h5>
+                <hr>
+                <h1 class="text-gradient text-primary">
+                    <span id="state2" countto="100">{{data.m_recibidos_encasa}}</span>
+                    <span class="text-totales">/ {{data.tm_recibidos_encasa}}</span>
+                </h1>
+
+                <p class="text-sm">
+                    Valor de la media de goles recibidos por el equipo local en su campo en las últimas 5 temporadas, y
+                    la media de goles recibidos en local de todos los equipo</p>
+            </div>
+            <hr class="vertical dark">
+        </div>
+        <div class="col-md-3 position-relative">
+            <div class="text-center">
+                <h5 class="mt-3">Media Goles Marcados como Visitante <b>{{data.visit}}</b></h5>
+                <hr>
+                <h1 class="text-gradient text-primary">
+                    <span id="state2" countto="100">{{data.m_marcados_envisita}}</span>
+                    <span class="text-totales">/ {{data.tm_marcados_envisita}}</span>
+                </h1>
+
+                <p class="text-sm">
+                    Valor de la media de goles marcados por el equipo visitante fuera de su campo en las últimas 5
+                    temporadas, y la media de goles marcados fuera de casa de todos los equipo</p>
+            </div>
+            <hr class="vertical dark">
+        </div>
+        <div class="col-md-3">
+            <div class="text-center">
+                <h5 class="mt-3">Media Goles Recibidos como Visitante <b>{{data.visit}}</b></h5>
+                <hr>
+                <h1 class="text-gradient text-primary" id="state3" countto="39">
+                    <span id="state2" countto="100">{{data.m_recibidos_envisita}}</span>
+                    <span class="text-totales">/ {{data.tm_recibidos_envisita}}</span>
+                </h1>
+
+                <p class="text-sm">
+                    Valor de la media de goles recibidos por el equipo visitante fuera de su campo en las últimas 5
+                    temporadas, y la media de goles recibidos fuera de casa de todos los equipo</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formula -->
+<div class="d-flex align-items-center mb-3">
+    <i class="material-icons text-primary mr-3 h3">filter_2</i>
+    <h3 class="mb-0">Aplicar Fórmula Saber Ganador</h3>
+</div>
+
+<div class="bd-callout bd-callout-info">
+    <p>
+        <b>Distribucion de Poisson: </b>Muestra el numero probable de veces que ocurrira un evento en un periodo de tiempo predeterminado.
+    </p>
+    <p>En el análisis necesitamos dos parámetros, lambda (&lambda;) es la mediana de goles en 90 minutos. En nuestro pronóstico es
+        la mediana de goles de un equipo local, visitante en la liga. Por otro lado, x es el número de goles en un
+        partido que podría marcar el equipo local o el equipo visitante, en nuestro caso entre 0 y 10 goles.
+    </p>
+</div>
+
+<div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow-sm">
+    <div class="row">
+        <div class="col-md-4 position-relative">
+            <div class="text-center">
+                <img src="../static/images/poisson_formula.png">
+            </div>
+            <hr class="vertical dark">
+        </div>
+
+        <div class="col-md-8 position-relative">
+            <div class="text-center">
+                <p class="text-sm text-formu color-home"><b>- &lambda; local {{data.home}}: </b>
+                    <span class="badge badge-pill badge-primary text-sm">{{data.lambda_local}}</span>
+                </p>
+                <p class="text-sm text-formu">media goles marcados en casa {{data.home}}
+                    <span class="badge badge-pill badge-light text-sm">{{data.m_marcados_encasa}}</span> *
+                    media goles recibidos fuera {{data.visit}}
+                    <span class="badge badge-pill badge-light text-sm">{{data.m_recibidos_envisita}}</span>
+                </p>
+                <p class="text-sm text-formu color-visit"><b>- &lambda; visitante {{data.visit}}:</b> <span
+                        class="badge badge-pill badge-info text-sm">{{data.lambda_visita}}</span></p>
+                <p class="text-sm text-formu">media goles marcados fuera {{data.visit}}
+                    <span class="badge badge-pill badge-light text-sm">{{data.m_marcados_envisita}}</span> *
+                    media goles recibidos en casa {{data.home}}
+                    <span class="badge badge-pill badge-light text-sm">{{data.m_recibidos_encasa}}</span>
+                </p>
+                <div class="col-12 col-lg-6 col-xl z-index-2">
+                    <div class="row nomargin">
+                        <div class="col-md-4 position-relative nopaddingr">
+                            <div class="card h-100 shadow_porc">
+                                <div class="card-header bg-light d-flex flex-between-center py-2">
+                                    <h6 class="mb-0 h6small">% Empate</h6>
+                                </div>
+                                <div class="card-body flex-center card_black">
+                                    <p class="text-sm text_italicGrey">(0,0) + (1,1) + ... + (10,10)</p>
+                                    <span class="text_porc">
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16 text-success mr-1 {{'tick_display' if data.porc_win == 'draw' }}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="transform-origin: 0.5em 0.5em;height: 25px;width: 25px; display:none">
+                                            <g transform="translate(256 256)">
+                                                <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
+                                                    <path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" transform="translate(-256 -256)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        {{data.prob_draw}} %</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 position-relative nopaddingr">
+                            <div class="card h-100 shadow_porc">
+                                <div class="card-header bg-light d-flex flex-between-center py-2">
+                                    <h6 class="mb-0 h6small">% Gana Local {{data.home}}</h6>
+                                </div>
+                                <div class="card-body flex-center card_black">
+                                    <p class="text-sm text_italicGrey">(1,0) + (2,0) + ... + (10, 9)</p>
+                                    <span class="text_porc">
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16 text-success mr-1 {{'tick_display' if data.porc_win == 'home' }}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="transform-origin: 0.5em 0.5em;height: 25px;width: 25px; display:none">
+                                            <g transform="translate(256 256)">
+                                                <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
+                                                    <path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" transform="translate(-256 -256)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        {{data.prob_home}} %</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 shadow_porc">
+                                <div class="card-header bg-light d-flex flex-between-center py-2">
+                                    <h6 class="mb-0 h6small">% Gana Visitante {{data.visit}}</h6>
+                                </div>
+                                <div class="card-body flex-center card_black">
+                                    <p class="text-sm text_italicGrey">(0,1) + (0,2) + ... + ( 9,10)</p>
+                                    <span class="text_porc">
+                                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16 text-success mr-1 {{'tick_display' if data.porc_win == 'away' }}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="transform-origin: 0.5em 0.5em;height: 25px;width: 25px;display:none">
+                                            <g transform="translate(256 256)">
+                                                <g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)">
+                                                    <path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" transform="translate(-256 -256)"></path>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        {{data.prob_away}} %</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex align-items-center mb-3">
+    <i class="material-icons text-primary mr-4 h3">filter_3</i>
+    <h3 class="mb-0">Distribucion Gráfica</h3>
+</div>
+
+<canvas id="myChart" height="100"></canvas>
+<!-- Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('myChart');
+    var barData = {
+        home: [
+            {% for item in data.data_home %}
+                {{ item }},
+            {% endfor %}
+	    ],
+        visit: [
+            {% for item in data.data_visit %}
+                {{ item }},
+            {% endfor %}
+        ]}
+
+    var _type = '{{typeChart}}'
+    var myChart = new Chart(ctx, {
+        type: _type,
+        data: {
+            labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+            datasets: [{
+                label: '{{data.home}}' + ' Local',
+                data: barData.home,
+                backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)'],
+                borderWidth: 1
+            }, {
+                label: '{{data.visit}}' + ' Visitante',
+                data: barData.visit,
+                backgroundColor: ['rgba(75, 192, 192, 0.2)'],
+                borderColor: ['rgba(75, 192, 192, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Moola',
+                        fontSize: 20
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+<!-- Tabla resultado -->
+<div class="d-flex col-lg-12 col-xl-12">
+    <div class="flex-fill w-100 card shadow-sm">
+        <div class="card-header">
+            <div class="card-actions float-right">
+                <div class="dropdown"><a aria-haspopup="true" class="" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="19" cy="12" r="1"></circle>
+                            <circle cx="5" cy="12" r="1"></circle>
+                        </svg>
+                    </a>
+                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Action</button>
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Another Action</button>
+                        <button type="button" tabindex="0" role="menuitem" class="dropdown-item">Something else here
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h5 class="mb-0 card-title">Histórico de partidos</h5>
+        </div>
+        <!-- render dataframe -->
+        {% for table in tables %}
+        {{ table|safe }}
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
