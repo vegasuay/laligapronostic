@@ -3,6 +3,7 @@
     background: #fff;
     -webkit-box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
     box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
+
 }
 
 .search-bar .form-group {
@@ -42,6 +43,11 @@
 
 .linerseparator {
     border-right: 1px solid #d3d3d3;
+}
+
+.padbutton20{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .headerWin {
@@ -162,4 +168,30 @@ hr.vertical {
 
 .h6small {
     font-size: 13px;
+}
+
+.index_bckgr {
+    background-image: url(../images/nuk-pro.png);
+    background-size: cover;
+    background-position: top;
+    top: 10%;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    max-width: inherit !important;
+    /*max-height: min-content !important;*/
+}
+
+.badge-soft-success {
+    color: #00864e;
+    background-color: #ccf6e4;
+    font-size: 40% !important;
+}
+
+.badge-soft-warning {
+    color: #9d5228;
+    background-color: #fde6d8;
+    font-size: 40% !important;
 }

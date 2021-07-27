@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from resources import get_current_teams
+from resources import get_current_teams, get_current_clasification
 from flask import request
 from resources import data
 
@@ -18,6 +18,10 @@ def post():
 
 @app.route('/goal', methods=['POST'])
 def goal():
+
+    # scraping table
+    list_clasif = get_current_clasification()
+
     # instanciar clase league
     league = data.League()
     home = request.form['selecthome']
@@ -56,7 +60,13 @@ def goal():
         'prob_draw': round(league.prob_draw * 100,2),
         'prob_home': round(league.prob_home * 100,2),
         'prob_away': round(league.prob_away * 100,2),
-        'porc_win': porc_win
+        'porc_win': porc_win,
+        'wins_local': 6,
+        'lose_local': 3,
+        'pos_local': 1,
+        'wins_visita': 1,
+        'lose_visita': 8,
+        'pos_visita': 4
     }
 
 

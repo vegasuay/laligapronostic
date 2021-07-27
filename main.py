@@ -12,6 +12,5 @@ enviroment = config_decouple['development']
 if config_decouple('PRODUCTION', default=False):
     enviroment = config_decouple['production']
 
-if __name__ == '__main__':
-    app = create_app(enviroment)
-    app.run()
+app = create_app(enviroment)
+    

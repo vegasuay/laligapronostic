@@ -4,6 +4,9 @@ from scipy.stats import poisson
 import datetime
 import glob
 import os
+import requests
+from bs4 import BeautifulSoup
+from resources import clasif
 
 
 def get_current_teams(country='SP1'):
@@ -11,6 +14,33 @@ def get_current_teams(country='SP1'):
     return df['HomeTeam'].unique()
 
 
+def get_current_clasification():
+    list_classif = []
+    cabecera = True
+    url = "https://resultados.as.com/resultados/futbol/primera/2020_2021/"
+    html = requests.get(url).content
+
+    soup = BeautifulSoup(html)
+    table = soup.select_one("div.cont-clasificacion>table")
+
+    for row in table.find_all("tr"):
+        th = row.find_all("th")
+        td = row.find_all("td")
+        if cabecera:
+            cabecera=False
+            continue
+
+        list_classif.append(clasif.Santander(
+            th[0].find_all("span")[1].contents[0], # team
+            th[0].find_all("span")[0].contents[0], # pos
+            td[0].contents[0],                     # pts
+            td[1].contents[0],                     # pj
+            td[2].contents[0],                     # pg
+            td[3].contents[0],                     # pe
+            td[4].contents[0],                     # pp
+        ))
+    
+    return list_classif
 class League():
 
     def __init__(self, country='SP1'):
