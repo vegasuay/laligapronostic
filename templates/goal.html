@@ -14,8 +14,21 @@
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">
                     {{data.home}} <small class="text-muted">/ {{data.pos_local}}</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>{{data.wins_local}} ganados / {{data.lose_local}} perdidos</li>
+                <ul class="list-unstyled cf list-group list-group-horizontal border-radius-xl mt-3">
+                    <li class="li-left-radius">
+                        <p class="txt-dato-ppal">{{data.wins_local}}</p>
+                        <p class="txt-ppal">ganados</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li>
+                        <p class="txt-dato-ppal">{{data.lose_local}}</p>
+                        <p class="txt-ppal">perdidos</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li class="li-right-radius">
+                        <p class="txt-dato-ppal">{{data.emp_local}}</p>
+                        <p class="txt-ppal">empatados</p>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -28,9 +41,23 @@
                 </h4>
             </div>
             <div class="card-body">
-                <h1 class="card-title pricing-card-title">{{data.visit}} <small class="text-muted">/ {{data.pos_visita}}</small></h1>
-                <ul class="list-unstyled mt-3 mb-4">
-                    <li>{{data.wins_visita}} ganados / {{data.lose_visita}} perdidos</li>
+                <h1 class="card-title pricing-card-title">
+                    {{data.visit}} <small class="text-muted">/ {{data.pos_visita}}</small></h1>
+                <ul class="list-unstyled cf list-group list-group-horizontal border-radius-xl mt-3">
+                    <li class="li-left-radius">
+                        <p class="txt-dato-ppal">{{data.wins_visita}}</p>
+                        <p class="txt-ppal">ganados</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li>
+                        <p class="txt-dato-ppal">{{data.lose_visita}}</p>
+                        <p class="txt-ppal">perdidos</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li class="li-right-radius">
+                        <p class="txt-dato-ppal">{{data.emp_visita}}</p>
+                        <p class="txt-ppal">empatados</p>
+                    </li>
                 </ul>
             </div>
         </div>

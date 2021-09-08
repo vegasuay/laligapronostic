@@ -10,34 +10,37 @@ from resources import clasif
 
 
 def get_current_teams(country='SP1'):
-    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/2021/" + country +".csv")
-    return df['HomeTeam'].unique()
+    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/2122/" + country +".csv")
+
+    df_all = [df['AwayTeam'], df['HomeTeam']]
+    teams = pd.concat(df_all)
+    return teams.unique()
 
 
 def get_current_clasification():
     list_classif = []
     cabecera = True
-    url = "https://resultados.as.com/resultados/futbol/primera/2020_2021/"
+
+    url= "https://www.siguetuliga.com/liga/primera-division-laliga-santander/clasificacion"
     html = requests.get(url).content
-
     soup = BeautifulSoup(html)
-    table = soup.select_one("div.cont-clasificacion>table")
+    table = soup.find(id='clasificacion')
 
+    # get files <tr>
     for row in table.find_all("tr"):
-        th = row.find_all("th")
         td = row.find_all("td")
         if cabecera:
             cabecera=False
             continue
 
         list_classif.append(clasif.Santander(
-            th[0].find_all("span")[1].contents[0], # team
-            th[0].find_all("span")[0].contents[0], # pos
-            td[0].contents[0],                     # pts
-            td[1].contents[0],                     # pj
-            td[2].contents[0],                     # pg
-            td[3].contents[0],                     # pe
-            td[4].contents[0],                     # pp
+            td[1].find_all("span")[0].contents[2],                     # team
+            td[0].find_all("a")[0].contents[0],                        # pos
+            td[2].find_all("a")[0].find_all("strong")[0].contents[0],  # pts
+            td[3].find_all("a")[0].contents[0],                        # pj
+            td[4].find_all("a")[0].contents[0],                        # pg
+            td[5].find_all("a")[0].contents[0],                        # pe
+            td[6].find_all("a")[0].contents[0],                        # pp
         ))
     
     return list_classif
@@ -50,19 +53,23 @@ class League():
 
         frames = []
 
+        # si estamos en mes mayor a 7, cambiar temporada
         current_year = (datetime.datetime.now()).year
+        current_month = (datetime.datetime.now()).month
         index_year = int(str(current_year)[2:4])
+        if current_month > 7:
+            index_year +=1
 
         # leer desde historico csv
         path = os.getcwd()
         for i in range(index_year - 5, index_year):
             df = pd.read_csv(os.path.join(path + "/resources/files/" + str(i - 1) + str(i) + "_" + country + ".csv"))
-            frames.append(self.__filter_importan_column(self, df, i))
+            frames.append(self.__filter_important_column(self, df, i))
 
         # leer liga actual desde url
         df = pd.read_csv(
             "http://www.football-data.co.uk/mmz4281/" + str(index_year - 1) + str(index_year) + "/" + country + ".csv")
-        frames.append(self.__filter_importan_column(self, df, index_year))
+        frames.append(self.__filter_important_column(self, df, index_year))
 
         self.dict_historical_data[country] = pd.concat(frames)
 
@@ -199,7 +206,7 @@ class League():
         return dict_table
 
     @staticmethod
-    def __filter_importan_column(self, _df, _i):
+    def __filter_important_column(self, _df, _i):
         # pillar columnas importantes
         _df = _df[['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG']]
         _df = _df.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'VisitGoals', 'AwayTeam': 'VisitTeam'})

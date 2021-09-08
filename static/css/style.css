@@ -195,3 +195,48 @@ hr.vertical {
     background-color: #fde6d8;
     font-size: 40% !important;
 }
+
+.cf li {
+    overflow: hidden;
+    padding: 15px 10px 0;
+    background: #454545;
+    float: left;
+    height: 100px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.li-left-radius {
+    border-bottom-left-radius: 1rem;
+    border-top-left-radius: 1rem;
+}
+
+.li-right-radius {
+    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.txt-dato-ppal {
+    position: relative;
+    z-index: 1;
+    font: 44px sourceblack,arial,helvetica;
+    color: #ffb713;
+    margin-bottom: 0px;
+    font-weight: bolder;
+}
+
+.txt-ppal {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 3px;
+    color: #fff;
+    font-size: 13px;
+}
+
+.hr-white {
+    background-image: linear-gradient(
+180deg
+,transparent,rgba(240,248,255,.4),transparent);
+}

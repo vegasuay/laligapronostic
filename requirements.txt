@@ -8,6 +8,7 @@ python-decouple==3.4
 #scrapping
 beautifulsoup4==4.9.3
 requests==2.26.0
+Unidecode==1.2.0
 
 # Flask Framework
 click==7.1.2

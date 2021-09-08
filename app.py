@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from resources import get_current_teams, get_current_clasification
 from flask import request
-from resources import data
+from resources import data, clasif
 
 app = Flask(__name__)
 
@@ -18,9 +18,6 @@ def post():
 
 @app.route('/goal', methods=['POST'])
 def goal():
-
-    # scraping table
-    list_clasif = get_current_clasification()
 
     # instanciar clase league
     league = data.League()
@@ -39,6 +36,27 @@ def goal():
     elif (league.prob_home > league.prob_away):
         porc_win = 'home'
     else: porc_win = 'away'
+
+    # scraping table clasification
+    pos_local= wins_local= lose_local= emp_local = \
+        pos_visita= wins_visita= lose_visita = emp_visita = 0
+    list_clasif = get_current_clasification()
+    
+    for obj in list_clasif:
+        if pos_local==0 and obj.isTeam(home):
+            pos_local = obj.pos;
+            wins_local= obj.pg;
+            lose_local= obj.pp;
+            emp_local = obj.pe;
+            continue;
+
+        if pos_visita==0 and obj.isTeam(visit):
+            pos_visita = obj.pos;
+            wins_visita = obj.pg;
+            lose_visita = obj.pp;
+            emp_visita = obj.pe;
+            continue;
+            
 
     object = {
         'home': home,
@@ -61,12 +79,14 @@ def goal():
         'prob_home': round(league.prob_home * 100,2),
         'prob_away': round(league.prob_away * 100,2),
         'porc_win': porc_win,
-        'wins_local': 6,
-        'lose_local': 3,
-        'pos_local': 1,
-        'wins_visita': 1,
-        'lose_visita': 8,
-        'pos_visita': 4
+        'pos_local': pos_local,
+        'wins_local': wins_local,
+        'emp_local': emp_local,
+        'lose_local': lose_local,
+        'pos_visita': pos_visita,
+        'wins_visita': wins_visita,
+        'lose_visita': lose_visita,
+        'emp_visita': emp_visita
     }
 
 
