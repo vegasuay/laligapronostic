@@ -23,7 +23,9 @@ class Santander():
         nTeam = self.__normalizeTeam(team)
 
         #ñapa
-        if nTeam == 'ATH MADRID': nTeam= 'ATL MADRID'
+        if nTeam == 'ATH MADRID': nTeam = 'ATL MADRID'
+        if nTeam == 'ATH BILBAO': nTeam = 'ATHLETIC CLUB'
+        if nTeam == 'ESPANOL'   : nTeam = 'ESPANYOL'
         
         if self.team == nTeam:
             return True

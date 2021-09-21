@@ -10,12 +10,21 @@ from resources import clasif
 
 
 def get_current_teams(country='SP1'):
-    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/2122/" + country +".csv")
+
+    # si estamos en mes mayor a 7, cambiar temporada
+    current_year = (datetime.datetime.now()).year
+    current_month = (datetime.datetime.now()).month
+    index_year = int(str(current_year)[2:4])
+    if current_month > 7:
+        index_year +=1
+
+    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/" \
+        + str(index_year-1) + str(index_year) + "/" \
+        + country +".csv")
 
     df_all = [df['AwayTeam'], df['HomeTeam']]
     teams = pd.concat(df_all)
     return teams.unique()
-
 
 def get_current_clasification():
     list_classif = []
@@ -44,6 +53,66 @@ def get_current_clasification():
         ))
     
     return list_classif
+
+def get_current_jornada(jornada='none'):
+    # si estamos en mes mayor a 7, cambiar temporada
+    current_year = (datetime.datetime.now()).year
+    current_month = (datetime.datetime.now()).month
+    index_year = int(str(current_year)[2:4])
+    if current_month > 7:
+        index_year +=1
+
+    if jornada == 'none':
+        url = "https://resultados.as.com/resultados/futbol/primera/jornada/"
+    else:
+        url = "https://resultados.as.com/resultados/futbol/primera/" \
+            + "20" + str(index_year -1) + "_20" + str(index_year) + "/" \
+            + "jornada/regular_a_" \
+            + jornada +"/"
+    html = requests.get(url).content
+    soup = BeautifulSoup(html)
+
+    array_jornadas = soup.find_all("span", {"class": "tit-jornada"})
+    fecha_evento = soup.find_all("span", {"class": "fecha-evento"})
+    resultados = soup.find_all("li", {"class":"list-resultado"})
+
+    current_jornada = array_jornadas[0].contents[0]
+
+    array_resultados = []
+    for idx,row in enumerate(resultados):
+        result_local = 'A'
+        result_visita = 'P'
+        if (len(row.find_all("a", {"class": "resultado"})) > 0):
+            txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
+            txt_result = txt_result.replace('\n','').split("-")
+            
+            if len(txt_result) > 1:
+                result_local = txt_result[0].strip()
+                result_visita = txt_result[1].strip()
+            elif len(txt_result) ==1:
+                fecha_partido = txt_result[0].strip().split(" ")
+                result_local = fecha_partido[0]
+                result_visita = fecha_partido[1]
+
+
+
+        array_resultados.append({
+            'local': row.find_all("span", {"class": "nombre-equipo"})[0].contents[0],
+            'visitante': row.find_all("span", {"class": "nombre-equipo"})[1].contents[0],
+            'result_local': result_local,
+            'result_visita': result_visita,
+            'count': idx + 1
+        })
+
+    return {
+        'current_jornada': current_jornada,
+        'total_jornadas': len(array_jornadas),
+        'fecha_evento': fecha_evento[0].contents[0],
+        'array_resultados': array_resultados
+    }
+
+
+
 class League():
 
     def __init__(self, country='SP1'):

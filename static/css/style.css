@@ -20,6 +20,10 @@
     right: 0;
 }
 
+.bck-jor{
+    border: 1px solid #adb5bd;
+}
+
 .input-label-absolute {
     position: relative;
 }
@@ -239,4 +243,53 @@ hr.vertical {
     background-image: linear-gradient(
 180deg
 ,transparent,rgba(240,248,255,.4),transparent);
+}
+
+.jorn-anterior {
+    padding: 0px;
+    float: left;
+}
+
+.jorn-posterior {
+    padding: 0PX;
+    float: right;
+}
+
+.jorn-center {
+    justify-content: center;
+}
+
+.td-border-right {
+    border-right: 2px solid #dee2e6;;
+}
+
+.td-result {
+    border: 1px solid #1e7e34;
+    background: #1e7e34;
+    color: #fff;
+    font-weight: bolder;
+}
+
+.td-bg-pronost {
+    background-color: #e9ecef5e;
+}
+
+.table .thead-light th:last-child {
+    width: 30%;
+}
+
+.table .tdbody-light td {
+    font-size: large;
+}
+
+.date_jornada {
+    font-size: small;
+}
+
+.pronost{
+    border-radius: .5rem;
+    background-color: #fff !important;
+    /*width: 30px;*/
+    height: 30px;
+    color: darkcyan;
 }

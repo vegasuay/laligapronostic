@@ -1,5 +1,7 @@
+from re import split
 from flask import Flask, render_template
-from resources import get_current_teams, get_current_clasification
+from resources import \
+    get_current_teams, get_current_clasification, get_current_jornada
 from flask import request
 from resources import data, clasif
 
@@ -104,6 +106,30 @@ def pronostic():
     return render_template('pronostic.html',
                             tables=[dataframe_pronostic.to_html(classes='my-0 table table-striped table-result')],
                             titles=dataframe_pronostic.columns.values)
+
+@app.route('/quiniela', methods=['POST','GET'])
+def quiniela():
+    jornada='none'
+    if request.args.get('btnjornada-ant'):
+        jornada=request.args.get('btnjornada-ant')
+    if request.args.get('btnjornada-sig'):
+        jornada=request.args.get('btnjornada-sig')
+    if jornada=='none' and request.args.get('jornada'):
+        jornada=request.args.get('jornada')
+
+    obj_jornada = get_current_jornada(jornada)
+    jor_actual=int(obj_jornada['current_jornada'].split(" ")[1])
+
+    # num of jornadas
+    jornadas = list(range(1,obj_jornada['total_jornadas']))
+
+    # scrapping from https://resultados.as.com/resultados/futbol/primera/jornada/
+    return render_template('quiniela.html', 
+        jornadas=jornadas,
+        int_jornada=jor_actual,
+        tit_table=obj_jornada['current_jornada'],
+        date_event = obj_jornada['fecha_evento'],
+        resultados = obj_jornada['array_resultados'])
 
 if __name__ == '__main__':
     app.run()
