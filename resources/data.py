@@ -7,6 +7,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from resources import clasif
+import unidecode
 
 
 def get_current_teams(country='SP1'):
@@ -54,7 +55,7 @@ def get_current_clasification():
     
     return list_classif
 
-def get_current_jornada(jornada='none'):
+def get_current_jornada(jornada='none', cLeague= None):
     # si estamos en mes mayor a 7, cambiar temporada
     current_year = (datetime.datetime.now()).year
     current_month = (datetime.datetime.now()).month
@@ -69,6 +70,7 @@ def get_current_jornada(jornada='none'):
             + "20" + str(index_year -1) + "_20" + str(index_year) + "/" \
             + "jornada/regular_a_" \
             + jornada +"/"
+    
     html = requests.get(url).content
     soup = BeautifulSoup(html)
 
@@ -78,6 +80,7 @@ def get_current_jornada(jornada='none'):
 
     current_jornada = array_jornadas[0].contents[0]
 
+    list_sp_teams= get_current_teams()
     array_resultados = []
     for idx,row in enumerate(resultados):
         result_local = 'A'
@@ -94,13 +97,38 @@ def get_current_jornada(jornada='none'):
                 result_local = fecha_partido[0]
                 result_visita = fecha_partido[1]
 
+        def find_team(team):
+            i=0
+            uni_team = unidecode.unidecode(team.upper())
+            #ñapa
+            if uni_team == 'ATLETICO'  : uni_team = 'ATH MADRID'
+            if uni_team == 'ATHLETIC'  : uni_team = ' ATH BILBAO'
+            if uni_team == 'ESPANYOL'  : uni_team = 'ESPANOL'
+            if uni_team == 'RAYO'      : uni_team = 'VALLECANO'
+            while i < len(list_sp_teams):
+                if uni_team == list_sp_teams[i].upper():
+                    return list_sp_teams[i]
+                elif list_sp_teams[i].upper() in uni_team:
+                    return list_sp_teams[i]
 
+                i +=1
+            
+            return team
+
+        strLocal = row.find_all("span", {"class": "nombre-equipo"})[0].contents[0]
+        strVisita= row.find_all("span", {"class": "nombre-equipo"})[1].contents[0]
+
+        points_home, points_away = cLeague.predict_points(
+            find_team(strLocal), 
+            find_team(strVisita))
 
         array_resultados.append({
-            'local': row.find_all("span", {"class": "nombre-equipo"})[0].contents[0],
-            'visitante': row.find_all("span", {"class": "nombre-equipo"})[1].contents[0],
+            'local': strLocal,
+            'visitante': strVisita,
             'result_local': result_local,
             'result_visita': result_visita,
+            'pronost_local': points_home,
+            'pronost_visita': points_away,
             'count': idx + 1
         })
 
@@ -110,8 +138,6 @@ def get_current_jornada(jornada='none'):
         'fecha_evento': fecha_evento[0].contents[0],
         'array_resultados': array_resultados
     }
-
-
 
 class League():
 

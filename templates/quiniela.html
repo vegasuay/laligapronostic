@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container pt-3">
     <!-- Navegacion jornadas  p-3 p-lg-1 pl-lg-4-->
-    <div class="search-bar bck-jor mt-5 p-2">
+    <div class="search-bar bck-jor p-2">
         <form action="{{ url_for('quiniela')}}">
             <div class="row">
                 <div class="d-flex form-group col-lg-2 jorn-anterior">
@@ -72,7 +72,7 @@
                             <th scope="col"></th>
                             <th scope="col">Visitante</th>
                             <th colspan="3" scope="col">Pronostico</th>
-                            <th scope="col"></th>
+                            <th scope="col">Acierto?</th>
                         </tr>
                     </thead>
                     <tbody class="tdbody-light">
@@ -85,15 +85,27 @@
                             <td class="td-result">{{resultado.result_visita}}</td>
                             <td><img src="../static/images/{{resultado.visitante}}.png"></td>
                             <td class="td-border-right">{{resultado.visitante}}</td>
+                            <!--gana local-->
                             <td class="td-bg-pronost">
-                                <div
-                                    class="pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center">
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_local > resultado.pronost_visita }}">
                                     <span>1</span>
                                 </div>
                             </td>
-                            <td class="td-bg-pronost">X</td>
-                            <td class="td-border-right td-bg-pronost">2</td>
-                            <td></td>
+                            <!--empate-->
+                            <td class="td-bg-pronost">
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_visita == resultado.pronost_local }}">
+                                    <span>X</span>
+                                </div>
+                            </td>
+                            <!--gana visita-->
+                            <td class="td-border-right td-bg-pronost">
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_visita > resultado.pronost_local }}">
+                                    <span>2</span>
+                                </div>
+                            </td>
+                            <td class="acierto">
+                                <i class="material-icons mr-3">close</i>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>

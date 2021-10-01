@@ -109,6 +109,9 @@ def pronostic():
 
 @app.route('/quiniela', methods=['POST','GET'])
 def quiniela():
+    league = data.League()
+    league.calculate_strength()
+
     jornada='none'
     if request.args.get('btnjornada-ant'):
         jornada=request.args.get('btnjornada-ant')
@@ -117,13 +120,12 @@ def quiniela():
     if jornada=='none' and request.args.get('jornada'):
         jornada=request.args.get('jornada')
 
-    obj_jornada = get_current_jornada(jornada)
+    obj_jornada = get_current_jornada(jornada, league)
     jor_actual=int(obj_jornada['current_jornada'].split(" ")[1])
 
     # num of jornadas
     jornadas = list(range(1,obj_jornada['total_jornadas']))
 
-    # scrapping from https://resultados.as.com/resultados/futbol/primera/jornada/
     return render_template('quiniela.html', 
         jornadas=jornadas,
         int_jornada=jor_actual,

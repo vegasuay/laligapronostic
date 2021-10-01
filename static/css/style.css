@@ -174,6 +174,18 @@ hr.vertical {
     font-size: 13px;
 }
 
+.apps-hero {
+    text-align: center;
+    background-color: #f8f5f1;
+    background-position: center bottom;
+    background-repeat: repeat-x;
+    /*margin-top: -15px;*/
+    /*padding-top: 300px;*/
+    background-image: url(//f.hubspotusercontent10.net/hubfs/19495563/raw_assets/public/getharvest-theme/images/backgrounds/wave.svg);
+    margin-bottom: 40px;
+    height: 70vh;
+}
+
 .index_bckgr {
     background-image: url(../images/nuk-pro.png);
     background-size: cover;
@@ -293,3 +305,10 @@ hr.vertical {
     height: 30px;
     color: darkcyan;
 }
+
+.acierto{ 
+    font-size: 22px !important;
+    color: #00864e;
+    background-color: #dcf7dc;
+}
+

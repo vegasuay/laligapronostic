@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container pt-3">
     <!-- card equipos -->
     <div class="card-deck mb-2 text-center">
-        <div class="card {{'border-success' if data.puntos_local > data.puntos_visita }} mb-4 shadow-sm">
+        <div class="card {{'border-success' if data.puntos_local > data.puntos_visita }} mb-4 shadow">
             <div class="card-header {{'headerWin' if data.puntos_local > data.puntos_visita }}">
                 <h4 class="my-0 font-weight-normal">
                     <img src="../static/images/{{data.home}}.png">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="card {{'border-success' if data.puntos_visita > data.puntos_local }} mb-4 shadow-sm">
+        <div class="card {{'border-success' if data.puntos_visita > data.puntos_local }} mb-4 shadow">
             <div class="card-header {{'headerWin' if data.puntos_visita > data.puntos_local }}">
                 <h4 class="my-0 font-weight-normal">
                     <img src="../static/images/{{data.visit}}.png">
@@ -69,7 +69,7 @@
     </div>
 
     <!-- Estadisticas -->
-    <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow-sm">
+    <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow">
         <div class="row">
             <div class="col-md-3 position-relative">
                 <div class="text-center">
@@ -182,7 +182,7 @@
         </p>
     </div>
 
-    <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow-sm">
+    <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow">
         <div class="row">
             <div class="col-md-4 position-relative">
                 <div class="text-center">
