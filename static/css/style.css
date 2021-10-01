@@ -1,9 +1,17 @@
 .search-bar {
-    border-radius: 10rem;
+    /*mobile version*/
     background: #fff;
     -webkit-box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
     box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
+}
 
+@media only screen and (min-width: 768px) {
+    .search-bar {
+        border-radius: 10rem;
+        background: #fff;
+        -webkit-box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
+        box-shadow: 0 0 1rem rgb(0 0 0 / 15%);
+    }
 }
 
 .search-bar .form-group {
@@ -45,8 +53,22 @@
     border-radius: 10rem !important;
 }
 
-.linerseparator {
-    border-right: 1px solid #d3d3d3;
+@media only screen and (min-width: 768px) {
+    .linerseparator {
+        border-right: 1px solid #d3d3d3;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .mt-mobile5 {
+        margin-top: 5px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .width-mobil {
+        max-width: 100% !important;
+    }
 }
 
 .padbutton20{
@@ -260,15 +282,18 @@ hr.vertical {
 .jorn-anterior {
     padding: 0px;
     float: left;
+    width: auto !important;
 }
 
 .jorn-posterior {
     padding: 0PX;
     float: right;
+    width: auto !important;
 }
 
 .jorn-center {
     justify-content: center;
+    width: auto !important;
 }
 
 .td-border-right {
