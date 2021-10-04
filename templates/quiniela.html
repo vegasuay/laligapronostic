@@ -64,7 +64,7 @@
                 <table class="table table-hover table-lg-responsive">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col" class="tdmobil"></th>
                             <th scope="col">Local</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -72,13 +72,13 @@
                             <th scope="col"></th>
                             <th scope="col">Visitante</th>
                             <th colspan="3" scope="col">Pronostico</th>
-                            <th scope="col">Acierto?</th>
+                            <th scope="col" class="tdmobil">Acierto?</th>
                         </tr>
                     </thead>
                     <tbody class="tdbody-light">
                         {% for resultado in resultados %}
                         <tr>
-                            <th scope="row">{{resultado.count}}</th>
+                            <th scope="row" class="tdmobil">{{resultado.count}}</th>
                             <td>{{resultado.local}}</td>
                             <td><img src="../static/images/{{resultado.local}}.png"></td>
                             <td class="td-result">{{resultado.result_local}}</td>
@@ -103,7 +103,7 @@
                                     <span>2</span>
                                 </div>
                             </td>
-                            <td class="acierto">
+                            <td class="acierto tdmobil">
                                 <i class="material-icons mr-3">close</i>
                             </td>
                         </tr>

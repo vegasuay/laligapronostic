@@ -59,15 +59,26 @@
     }
 }
 
+/*quiniela*/
 @media only screen and (max-width: 768px) {
+    .table .tdbody-light td {
+        font-size: 12px !important;
+        padding: .6rem !important;
+    }
+    .table .thead-light th {
+        font-size: 12px !important;
+    }
+    .tdmobil {
+        display: none !important;
+    }
+    .width-mobil {
+        max-width: 100% !important;
+    }
     .mt-mobile5 {
         margin-top: 5px !important;
     }
-}
-
-@media only screen and (max-width: 768px) {
-    .width-mobil {
-        max-width: 100% !important;
+    .btn {
+        font-size: 12px !important;
     }
 }
 
@@ -326,8 +337,8 @@ hr.vertical {
 .pronost{
     border-radius: .5rem;
     background-color: #fff !important;
-    /*width: 30px;*/
-    height: 30px;
+    width: 18px;
+    height: 18px;
     color: darkcyan;
 }
 
