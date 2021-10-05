@@ -91,7 +91,8 @@
         margin-top: 5px !important;
     }
     .btn {
-        font-size: 12px !important;
+        font-size: 10px !important;
+        padding: 2px !important;
     }
     .form-control-lg {
         font-size: 11px !important;
