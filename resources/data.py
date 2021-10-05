@@ -122,6 +122,19 @@ def get_current_jornada(jornada='none', cLeague= None):
             find_team(strLocal), 
             find_team(strVisita))
 
+        # calcular acierto o fallo
+        acierto = False
+        icono = 'close'
+        if (result_local > result_visita) and (points_home > points_away):
+            acierto = True
+            icono = 'done'
+        elif (result_local < result_visita) and (points_home < points_away):
+            acierto = True
+            icono = 'done'
+        elif (result_local == result_visita) and (points_home == points_away):
+            acierto = True
+            icono = 'done'
+        
         array_resultados.append({
             'local': strLocal,
             'visitante': strVisita,
@@ -129,6 +142,8 @@ def get_current_jornada(jornada='none', cLeague= None):
             'result_visita': result_visita,
             'pronost_local': points_home,
             'pronost_visita': points_away,
+            'acierto': acierto,
+            'icono': icono,
             'count': idx + 1
         })
 

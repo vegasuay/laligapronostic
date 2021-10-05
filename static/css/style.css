@@ -103,6 +103,13 @@
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
+    .bck-jor {
+        padding: 0.2rem !important;
+    }
+    .jorn-center {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
 }
 
 /*goal*/
@@ -343,7 +350,7 @@ hr.vertical {
 
 .td-result {
     border: 1px solid #1e7e34;
-    background: #1e7e34;
+    background: cadetblue;
     color: #fff;
     font-weight: bolder;
 }
@@ -377,4 +384,8 @@ hr.vertical {
     color: #00864e;
     background-color: #dcf7dc;
 }
-
+.fallo{
+    font-size: 22px !important;
+    color: #bd2130;
+    background-color: #bd213047;
+}
