@@ -1,3 +1,8 @@
+.subtitle {
+    font-size: small;
+    color: darkkhaki;
+}
+
 .search-bar {
     /*mobile version*/
     background: #fff;
@@ -53,17 +58,25 @@
     border-radius: 10rem !important;
 }
 
+/*general*/
 @media only screen and (min-width: 768px) {
     .linerseparator {
         border-right: 1px solid #d3d3d3;
     }
+    .table td {
+        padding: 0.4rem !important;
+    }
+}
+
+.nopaddingr {
+    padding-right: 0px !important;
 }
 
 /*quiniela*/
 @media only screen and (max-width: 768px) {
     .table .tdbody-light td {
         font-size: 12px !important;
-        padding: .6rem !important;
+        padding: .4rem !important;
     }
     .table .thead-light th {
         font-size: 12px !important;
@@ -79,6 +92,27 @@
     }
     .btn {
         font-size: 12px !important;
+    }
+    .form-control-lg {
+        font-size: 11px !important;
+    }
+    .card-header {
+        padding: .75rem 0.4rem !important;
+    }
+    .noMargin {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+
+/*goal*/
+@media only screen and (max-width: 768px) {
+    .nopaddingr {
+        padding-right: 15px !important;
+        padding-bottom: 10px !important;
+    }
+    .table {
+        font-size: smaller !important;
     }
 }
 
@@ -172,10 +206,6 @@ hr.vertical {
     margin-left: -30px !important;
     margin-right: -30px !important;
     margin-top: 10px !important;
-}
-
-.nopaddingr {
-    padding-right: 0px !important;
 }
 
 .shadow_porc {
