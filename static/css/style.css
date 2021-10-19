@@ -295,6 +295,17 @@ hr.vertical {
     width: 100%;
 }
 
+.cu li{
+    overflow: hidden;
+    background: #fff;
+    float: left;
+    height: 50px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
 .li-left-radius {
     border-bottom-left-radius: 1rem;
     border-top-left-radius: 1rem;
@@ -314,6 +325,24 @@ hr.vertical {
     font-weight: bolder;
 }
 
+.txt-dato-ultp {
+    position: relative;
+    z-index: 1;
+    font: 24px sourceblack,arial,helvetica;
+    color: #ffb713;
+    margin-bottom: 0px;
+    font-weight: bolder;
+    text-shadow: none !important;
+}
+
+.txt-ultp {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 3px;
+    color: #6c757d;
+    font-size: 13px;
+}
+
 .txt-ppal {
     position: relative;
     z-index: 1;
@@ -326,6 +355,12 @@ hr.vertical {
     background-image: linear-gradient(
 180deg
 ,transparent,rgba(240,248,255,.4),transparent);
+}
+
+.hr-grey {
+    background-image: linear-gradient(
+180deg
+,transparent,rgba(13, 14, 15, 0.4),transparent);
 }
 
 .jorn-anterior {
@@ -372,6 +407,13 @@ hr.vertical {
     font-size: small;
 }
 
+.m-titles{
+    color: #6c757d;
+}
+.m-border{
+    border: 1px solid #adb5bd;
+}
+
 .pronost{
     border-radius: .5rem;
     background-color: #fff !important;
@@ -389,4 +431,64 @@ hr.vertical {
     font-size: 22px !important;
     color: #bd2130;
     background-color: #bd213047;
+}
+
+.card-lastgames{
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px !important;
+    padding: 10px !important;
+}
+
+
+@media (min-width: 1200px){
+    .card-task .card-body {
+        justify-content: space-between;
+    }
+    
+}
+
+.card-meta{
+    justify-content: space-between;
+}
+
+@media (min-width: 1200px){
+    .card-task .card-body, .card-task .card-meta {
+        display: flex;
+        align-items: center;
+    }
+} 
+
+.bg-soft-win {
+    background-color: #e0faef!important;
+    border: 2px solid #1e7e34;
+}
+.bg-soft-lose {
+    background-color: #fce7eb!important;
+    border: 2px solid #dc3545;
+}
+.bg-soft-empate {
+    background-color: #fef0e8!important;
+    border: 2px solid #d6961f;
+}
+
+
+.card-ultpartidos {
+    border: 1px solid #d3d3d3;
+    padding: 6px;
+    margin-right: 1.25rem;
+    margin-left: 1.25rem;
+    padding: 0 !important;
+    border-top: 0px;
+    border-right: 2px solid #adb5bd;
+    border-bottom: 2px solid #adb5bd;
+}
+
+.card-ultpartidos .div-title {
+    background-color: #e9ecef;
+    text-align: initial;
+    border-bottom: 1px solid #adb5bd;
 }

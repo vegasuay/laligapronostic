@@ -31,6 +31,11 @@ def goal():
 
     points_home, points_away = league.predict_points(home, visit)
 
+    #TODO: leer apustas
+    #https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829
+    #https://sports.williamhill.es/betting/es-es/football/competitions/OB_TY338/Espana-LaLiga-Santander/matches/OB_MGMB/Ganador-del-partido
+    #https://www.pokerstarssports.es/?no_redirect=1#/soccer/competitions/10679937
+
     # icono del porcentage
     porc_win = 'draw'
     if (league.prob_draw > league.prob_home and league.prob_draw > league.prob_away):
@@ -58,6 +63,8 @@ def goal():
             lose_visita = obj.pp;
             emp_visita = obj.pe;
             continue;
+
+    #TODO: ponderar por posicion temporada
             
 
     object = {

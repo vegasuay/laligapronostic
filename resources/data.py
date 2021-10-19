@@ -28,6 +28,11 @@ def get_current_teams(country='SP1'):
     return teams.unique()
 
 def get_current_clasification():
+    """
+    obtiene de la web siguetuliga.com la posicion, partidos, puntos
+
+    :return: list<dict>
+    """
     list_classif = []
     cabecera = True
 
@@ -56,6 +61,12 @@ def get_current_clasification():
     return list_classif
 
 def get_current_jornada(jornada='none', cLeague= None):
+    """
+    obtiene de la web de as los resultados de enfrentamientos
+
+    :return: object
+    """
+
     # si estamos en mes mayor a 7, cambiar temporada
     current_year = (datetime.datetime.now()).year
     current_month = (datetime.datetime.now()).month
@@ -198,12 +209,14 @@ class League():
                 })
 
     def calculate_strength(self):
-        # se suman todos los goles metidos jugando en casa y encajados (ultimos 5 años)
-        # por cada equipo se hace la media de sus goles metidos y encajados en casa
-        # ejemplo
-        # Team         | HomeScored | HomeConceded
-        # Alaves       |        1.34|        1.34|
-        # Real Madrid  |        2.56|        0.56|
+        """
+        se suman todos los goles metidos jugando en casa y encajados (ultimos 5 años)
+        por cada equipo se hace la media de sus goles metidos y encajados en casa
+        ejemplo
+        Team         | HomeScored | HomeConceded
+        Alaves       |        1.34|        1.34|
+        Real Madrid  |        2.56|        0.56|
+        """
         home = self.dict_historical_data[self.country][['HomeTeam', 'HomeGoals', 'VisitGoals']] \
             .rename(columns={'HomeTeam': 'Team', 'HomeGoals': 'HomeScored', 'VisitGoals': 'HomeConceded'}) \
             .groupby(['Team'], as_index=False)[['HomeScored', 'HomeConceded']] \
