@@ -5,9 +5,11 @@ import datetime
 import glob
 import os
 import requests
+from selenium import webdriver
 from bs4 import BeautifulSoup
 from resources import clasif
 import unidecode
+from resources.bit_constants import BWIN, BWIN_URL
 
 
 def get_current_teams(country='SP1'):
@@ -165,6 +167,49 @@ def get_current_jornada(jornada='none', cLeague= None):
         'array_resultados': array_resultados
     }
 
+def get_bwin_bit(home, visit):
+    obj_return = {'valor_1' :'', 'valor_2': '', 'valor_x':'', 'found': False}
+    uni_home = unidecode.unidecode(home.upper())
+    uni_home_bwin = BWIN[uni_home]
+    uni_visit= unidecode.unidecode(visit.upper())
+    uni_visit_bwin = BWIN[uni_visit]
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+    # OR options.add_argument("--disable-gpu")
+    #driver = webdriver.Chrome('chromedriver', chrome_options=options)
+    driver = webdriver.Chrome()
+    driver.set_window_position(-10000,0)
+    driver.get(BWIN_URL)
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+
+    # div partidos
+    partidos_container = soup.findAll("div", {"class": "grid-event-wrapper"})
+
+    for partido in partidos_container:
+        try:
+            # div equipos
+            teams = partido.find_all("div", {"class": "participant"})
+            home_read = unidecode.unidecode(teams[0].contents[0].strip().upper())
+            visit_read = unidecode.unidecode(teams[1].contents[0].strip().upper())
+            # partido encontrado
+            if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
+                apuestas = partido.find_all("div", {"class": "option-indicator"})
+                
+                obj_return['valor_1'] = apuestas[0].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
+                obj_return['valor_x'] = apuestas[1].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
+                obj_return['valor_2'] = apuestas[2].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
+                obj_return['found'] = True
+                
+                break                
+
+        except Exception as ex:
+            pass
+
+    driver.quit()
+    return obj_return
 class League():
 
     def __init__(self, country='SP1'):
