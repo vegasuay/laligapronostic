@@ -174,14 +174,19 @@ def get_bwin_bit(home, visit):
     uni_visit= unidecode.unidecode(visit.upper())
     uni_visit_bwin = BWIN[uni_visit]
 
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("disable-gpu")
-    # OR options.add_argument("--disable-gpu")
-    #driver = webdriver.Chrome('chromedriver', chrome_options=options)
-    driver = webdriver.Chrome()
-    driver.set_window_position(-10000,0)
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    
+    # para heroku
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
+    # para desarrollo
+    #driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
+
     driver.get(BWIN_URL)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
