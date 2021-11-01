@@ -93,7 +93,8 @@ def goal():
         'pos_visita': pos_visita,
         'wins_visita': wins_visita,
         'lose_visita': lose_visita,
-        'emp_visita': emp_visita
+        'emp_visita': emp_visita,
+        'bwin': bwinValue
     }
 
 

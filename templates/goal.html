@@ -442,11 +442,23 @@
                     </div>
                     
                     <div class="card-toolbar">
-                        <span class="badge badge-light-error me-auto px-4 py-3">In Progress</span>
+                        <span class="badge badge-light-error me-auto px-4 py-3
+                        {{badge-light-success if data.bwin['found']}}">{{data.bwin['text']}}</span>
                     </div>
                 </div>
-                <div class="card-body p-9">
-                    <div class="fs-2 fw-bolder text-dark">Mivy App</div>
+                <div class="header-encuestas border-0 pt-9">
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>1</div>
+                        <div>{{data.bwin['valor_1']}}</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>X</div>
+                        <div>{{data.bwin['valor_x']}}</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>2</div>
+                        <div>{{data.bwin['valor_2']}}</div>
+                    </div>
                 </div>
                 <hr class="vertical dark">
             </div>
@@ -464,8 +476,19 @@
                         <span class="badge badge-light-error me-auto px-4 py-3">In Progress</span>
                     </div>
                 </div>
-                <div class="card-body p-9">
-                    <div class="fs-2 fw-bolder text-dark">Mivy App</div>
+                <div class="header-encuestas border-0 pt-9">
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>1</div>
+                        <div>4,6</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>X</div>
+                        <div>4,6</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>2</div>
+                        <div>4,6</div>
+                    </div>
                 </div>
                 <hr class="vertical dark">
             </div>
@@ -483,8 +506,19 @@
                         <span class="badge badge-light-error me-auto px-4 py-3">In Progress</span>
                     </div>
                 </div>
-                <div class="card-body p-9">
-                    <div class="fs-2 fw-bolder text-dark">Mivy App</div>
+                <div class="header-encuestas border-0 pt-9">
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>1</div>
+                        <div>4,6</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>X</div>
+                        <div>4,6</div>
+                    </div>
+                    <div class="fs-2 fw-bolder text-dark div_value_bit">
+                        <div>2</div>
+                        <div>4,6</div>
+                    </div>
                 </div>
             </div>
         </div>

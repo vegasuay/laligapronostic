@@ -512,3 +512,15 @@ hr.vertical {
     background-color: #f4fbdb;
     font-weight: 600!important;
 }
+
+.div_value_bit {
+    border: 1px solid #d3d3d3;
+    width: 33%;
+    padding: 5px;
+}
+
+.div_value_bit > div:first-child {
+    border-bottom: 1px solid #d3d3d3;
+    font-weight: bolder;
+    background: #f7f7f7;
+}

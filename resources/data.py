@@ -6,6 +6,10 @@ import glob
 import os
 import requests
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
 from resources import clasif
 import unidecode
@@ -168,7 +172,10 @@ def get_current_jornada(jornada='none', cLeague= None):
     }
 
 def get_bwin_bit(home, visit):
-    obj_return = {'valor_1' :'', 'valor_2': '', 'valor_x':'', 'found': False}
+    obj_return = {
+        'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
+        'found': False,
+        'text': 'No encontrado'}
     uni_home = unidecode.unidecode(home.upper())
     uni_home_bwin = BWIN[uni_home]
     uni_visit= unidecode.unidecode(visit.upper())
@@ -191,6 +198,15 @@ def get_bwin_bit(home, visit):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
     # div partidos
+    # waiting for partidos to load
+    try:
+        delay = 10 # seconds
+        wait = WebDriverWait(driver, delay)
+        posters = wait.until(EC.presence_of_all_elements_located((By.ID, "main-view")))
+    except TimeoutException:
+        print("Loading took too much time!")
+        pass
+
     partidos_container = soup.findAll("div", {"class": "grid-event-wrapper"})
 
     for partido in partidos_container:
@@ -207,7 +223,7 @@ def get_bwin_bit(home, visit):
                 obj_return['valor_x'] = apuestas[1].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
                 obj_return['valor_2'] = apuestas[2].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
                 obj_return['found'] = True
-                
+                obj_return['text']= 'Confirmado'
                 break                
 
         except Exception as ex:
