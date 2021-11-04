@@ -4,6 +4,7 @@ from resources import \
     get_current_teams, get_current_clasification, get_current_jornada
 from flask import request
 from resources import data
+import unidecode
 
 app = Flask(__name__)
 
@@ -32,7 +33,10 @@ def goal():
     points_home, points_away = league.predict_points(home, visit)
 
     # leer apustas
-    bwinValue = data.get_bwin_bit(home, visit)
+    uni_home = unidecode.unidecode(home.upper())
+    uni_visit= unidecode.unidecode(visit.upper())
+    bwinValue = data.get_bwin_bit(uni_home, uni_visit)
+    #willianValue = data.get_william_bit(uni_home, uni_visit)
     
     # icono del porcentage
     porc_win = 'draw'

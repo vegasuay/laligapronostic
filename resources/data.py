@@ -13,7 +13,7 @@ from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
 from resources import clasif
 import unidecode
-from resources.bit_constants import BWIN, BWIN_URL
+from resources.bit_constants import BWIN, BWIN_URL, WILLIAM, WILLIAM_URL
 
 
 def get_current_teams(country='SP1'):
@@ -171,17 +171,7 @@ def get_current_jornada(jornada='none', cLeague= None):
         'array_resultados': array_resultados
     }
 
-def get_bwin_bit(home, visit):
-    obj_return = {
-        'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
-        'found': False,
-        'text': 'No encontrado'}
-    uni_home = unidecode.unidecode(home.upper())
-    uni_home_bwin = BWIN[uni_home]
-    uni_visit= unidecode.unidecode(visit.upper())
-    uni_visit_bwin = BWIN[uni_visit]
-
-
+def _get_chromeoptions(class_name, url):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--headless")
@@ -189,47 +179,75 @@ def get_bwin_bit(home, visit):
     chrome_options.add_argument("--no-sandbox")
     
     # para heroku
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    #driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
     # para desarrollo
-    #driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
-
-    driver.get(BWIN_URL)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
 
     # div partidos
     # waiting for partidos to load
+    partidos_container = None
     try:
         delay = 10 # seconds
         wait = WebDriverWait(driver, delay)
-        posters = wait.until(EC.presence_of_all_elements_located((By.ID, "main-view")))
+        driver.get(url)
+        partidos_container = wait.until(
+            EC.presence_of_all_elements_located((
+                By.CLASS_NAME, class_name)))
     except TimeoutException:
         print("Loading took too much time!")
         pass
 
-    partidos_container = soup.findAll("div", {"class": "grid-event-wrapper"})
+    driver.quit()
+    return partidos_container
 
-    for partido in partidos_container:
+def get_william_bit(home, visit):
+    obj_return = {
+        'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
+        'found': 'False',
+        'text': 'No encontrado'}
+    uni_home_william = WILLIAM[home]
+    uni_visit_william = WILLIAM[visit]
+
+    for partido in _get_chromeoptions("football-app", WILLIAM_URL):
+        try:
+            teams = partido.find_elements_by_class_name('sp-o-market__title')
+            p=""
+        except Exception as ex:
+            pass
+
+    return obj_return
+
+    
+
+def get_bwin_bit(home, visit):
+    obj_return = {
+        'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
+        'found': 'False',
+        'text': 'No encontrado'}
+    uni_home_bwin = BWIN[home]
+    uni_visit_bwin = BWIN[visit]
+
+    for partido in _get_chromeoptions("grid-event-wrapper", BWIN_URL):
         try:
             # div equipos
-            teams = partido.find_all("div", {"class": "participant"})
-            home_read = unidecode.unidecode(teams[0].contents[0].strip().upper())
-            visit_read = unidecode.unidecode(teams[1].contents[0].strip().upper())
+            teams = partido.find_elements_by_class_name('participant')
+            home_read = unidecode.unidecode(teams[0].text.strip().upper())
+            visit_read = unidecode.unidecode(teams[1].text.strip().upper())
             # partido encontrado
             if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
-                apuestas = partido.find_all("div", {"class": "option-indicator"})
+                apuestas = partido.find_elements_by_class_name("option-indicator")
                 
-                obj_return['valor_1'] = apuestas[0].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
-                obj_return['valor_x'] = apuestas[1].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
-                obj_return['valor_2'] = apuestas[2].find_all("div", {"class": "option-value"})[0].contents[0].contents[0]
-                obj_return['found'] = True
+                obj_return['valor_1'] = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
+                obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
+                obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
+                obj_return['found'] = 'True'
                 obj_return['text']= 'Confirmado'
                 break                
 
         except Exception as ex:
             pass
 
-    driver.quit()
     return obj_return
 class League():
 
