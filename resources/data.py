@@ -178,11 +178,13 @@ def _get_chromeoptions(class_name, url):
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
     
-    # para heroku
-    #driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-
-    # para desarrollo
-    driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
+    
+    if (os.environ.get("PRODUCTION")):
+        # para heroku
+        driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    else:
+        # para desarrollo
+        driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
 
     # div partidos
     # waiting for partidos to load
