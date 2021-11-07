@@ -13,7 +13,8 @@ from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
 from resources import clasif
 import unidecode
-from resources.bit_constants import BWIN, BWIN_URL, WILLIAM, WILLIAM_URL
+from resources.bit_constants import \
+    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL
 
 
 def get_current_teams(country='SP1'):
@@ -200,8 +201,36 @@ def _get_chromeoptions(class_name, url):
         print("Loading took too much time!")
         pass
 
-    driver.quit()
     return partidos_container
+
+def get_pocker_bit(home, visit):
+    obj_return = {
+        'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
+        'found': 'False',
+        'text': 'No encontrado'}
+    uni_home_poker = POKER[home]
+    uni_visit_poker = POKER[visit]
+
+    for partido in _get_chromeoptions("eventView-soccer", POKER_URL):
+        try:
+            # div equipos
+            teams = partido.find_elements_by_class_name('event-schedule-participants-name')
+            home_read=unidecode.unidecode(teams[0].text.strip().upper())
+            visit_read=unidecode.unidecode(teams[1].text.strip().upper())
+            # partido encontrado
+            if home_read == uni_home_poker and visit_read == uni_visit_poker:
+                apuestas = partido.find_elements_by_class_name("button__bet__odds")
+
+                obj_return['valor_1'] = apuestas[0].text.strip()
+                obj_return['valor_x'] = apuestas[1].text.strip()
+                obj_return['valor_2'] = apuestas[2].text.strip()
+                obj_return['found'] = 'True'
+                obj_return['text']= 'Confirmado'
+                break   
+
+        except Exception as ex:
+            pass
+    return obj_return
 
 def get_william_bit(home, visit):
     obj_return = {
@@ -211,16 +240,26 @@ def get_william_bit(home, visit):
     uni_home_william = WILLIAM[home]
     uni_visit_william = WILLIAM[visit]
 
-    for partido in _get_chromeoptions("football-app", WILLIAM_URL):
-        try:
-            teams = partido.find_elements_by_class_name('sp-o-market__title')
-            p=""
-        except Exception as ex:
-            pass
+    partidos_container = _get_chromeoptions("football-app", WILLIAM_URL)     
+    for partido in partidos_container[0].find_elements_by_css_selector('article.sp-o-market'):
+        title= partido.find_elements_by_css_selector('main.sp-o-market__title')
+        if (title[0].text.__contains__(' ₋ ')):
+            # div equipos
+            teams = title[0].text.split(' ₋ ')
+            home_read = unidecode.unidecode(teams[0].strip().upper())
+            visit_read = unidecode.unidecode(teams[1].strip().upper())
+            # partido encontrado
+            if home_read == uni_home_william and visit_read == uni_visit_william:
+                apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
+                
+                obj_return['valor_1'] = apuestas[0].text.strip()
+                obj_return['valor_x'] = apuestas[1].text.strip()
+                obj_return['valor_2'] = apuestas[2].text.strip()
+                obj_return['found'] = 'True'
+                obj_return['text']= 'Confirmado'
+                break                
 
     return obj_return
-
-    
 
 def get_bwin_bit(home, visit):
     obj_return = {

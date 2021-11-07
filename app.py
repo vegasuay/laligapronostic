@@ -36,7 +36,8 @@ def goal():
     uni_home = unidecode.unidecode(home.upper())
     uni_visit= unidecode.unidecode(visit.upper())
     bwinValue = data.get_bwin_bit(uni_home, uni_visit)
-    #willianValue = data.get_william_bit(uni_home, uni_visit)
+    willianValue = data.get_william_bit(uni_home, uni_visit)
+    pokerValue = data.get_pocker_bit(uni_home, uni_visit)
     
     # icono del porcentage
     porc_win = 'draw'
@@ -98,7 +99,9 @@ def goal():
         'wins_visita': wins_visita,
         'lose_visita': lose_visita,
         'emp_visita': emp_visita,
-        'bwin': bwinValue
+        'bwin': bwinValue,
+        'william': willianValue,
+        'poker': pokerValue
     }
 
 
