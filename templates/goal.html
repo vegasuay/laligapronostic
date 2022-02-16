@@ -475,7 +475,8 @@
                     
                     <div class="card-toolbar">
                         <span class="badge badge-light-nofound me-auto px-4 py-3
-                        {{'badge-light-success' if data.william['found']=='True' }}">{{data.william['text']}}</span>
+                        {{'badge-light-success' if data.william['found']=='True' }}
+                        {{'badge-light-error' if data.william['text'] == 'Diferencia'}}">{{data.william['text']}}</span>
                     </div>
                 </div>
                 <div class="header-encuestas border-0 pt-9">
@@ -506,7 +507,8 @@
                     
                     <div class="card-toolbar">
                         <span class="badge badge-light-nofound me-auto px-4 py-3
-                        {{'badge-light-success' if data.poker['found']=='True' }}">{{data.poker['text']}}</span>
+                        {{'badge-light-success' if data.poker['found']=='True' }}
+                        {{'badge-light-error' if data.poker['text'] == 'Diferencia'}}">{{data.poker['text']}}</span>
                     </div>
                 </div>
                 <div class="header-encuestas border-0 pt-9">

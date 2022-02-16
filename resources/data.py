@@ -5,6 +5,7 @@ import datetime
 import glob
 import os
 import requests
+import asyncio
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -24,15 +25,16 @@ def get_current_teams(country='SP1'):
     current_month = (datetime.datetime.now()).month
     index_year = int(str(current_year)[2:4])
     if current_month > 7:
-        index_year +=1
+        index_year += 1
 
-    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/" \
-        + str(index_year-1) + str(index_year) + "/" \
-        + country +".csv")
+    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/"
+        + str(index_year-1) + str(index_year) + "/"
+        + country + ".csv")
 
     df_all = [df['AwayTeam'], df['HomeTeam']]
     teams = pd.concat(df_all)
     return teams.unique()
+
 
 def get_current_clasification():
     """
@@ -43,7 +45,7 @@ def get_current_clasification():
     list_classif = []
     cabecera = True
 
-    url= "https://www.siguetuliga.com/liga/primera-division-laliga-santander/clasificacion"
+    url = "https://www.siguetuliga.com/liga/primera-division-laliga-santander/clasificacion"
     html = requests.get(url).content
     soup = BeautifulSoup(html)
     table = soup.find(id='clasificacion')
@@ -52,7 +54,7 @@ def get_current_clasification():
     for row in table.find_all("tr"):
         td = row.find_all("td")
         if cabecera:
-            cabecera=False
+            cabecera = False
             continue
 
         list_classif.append(clasif.Santander(
@@ -64,10 +66,11 @@ def get_current_clasification():
             td[5].find_all("a")[0].contents[0],                        # pe
             td[6].find_all("a")[0].contents[0],                        # pp
         ))
-    
+
     return list_classif
 
-def get_current_jornada(jornada='none', cLeague= None):
+
+def get_current_jornada(jornada='none', cLeague=None):
     """
     obtiene de la web de as los resultados de enfrentamientos
 
@@ -79,65 +82,68 @@ def get_current_jornada(jornada='none', cLeague= None):
     current_month = (datetime.datetime.now()).month
     index_year = int(str(current_year)[2:4])
     if current_month > 7:
-        index_year +=1
+        index_year += 1
 
     if jornada == 'none':
         url = "https://resultados.as.com/resultados/futbol/primera/jornada/"
     else:
         url = "https://resultados.as.com/resultados/futbol/primera/" \
-            + "20" + str(index_year -1) + "_20" + str(index_year) + "/" \
+            + "20" + str(index_year - 1) + "_20" + str(index_year) + "/" \
             + "jornada/regular_a_" \
-            + jornada +"/"
-    
+            + jornada + "/"
+
     html = requests.get(url).content
     soup = BeautifulSoup(html)
 
     array_jornadas = soup.find_all("span", {"class": "tit-jornada"})
     fecha_evento = soup.find_all("span", {"class": "fecha-evento"})
-    resultados = soup.find_all("li", {"class":"list-resultado"})
+    resultados = soup.find_all("li", {"class": "list-resultado"})
 
     current_jornada = array_jornadas[0].contents[0]
 
-    list_sp_teams= get_current_teams()
+    list_sp_teams = get_current_teams()
     array_resultados = []
-    for idx,row in enumerate(resultados):
+    for idx, row in enumerate(resultados):
         result_local = 'A'
         result_visita = 'P'
         if (len(row.find_all("a", {"class": "resultado"})) > 0):
-            txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
-            txt_result = txt_result.replace('\n','').split("-")
-            
+            txt_result = row.find_all("a", {"class": "resultado"})[
+                                      0].contents[0]
+            txt_result = txt_result.replace('\n', '').split("-")
+
             if len(txt_result) > 1:
                 result_local = txt_result[0].strip()
                 result_visita = txt_result[1].strip()
-            elif len(txt_result) ==1:
+            elif len(txt_result) == 1:
                 fecha_partido = txt_result[0].strip().split(" ")
                 result_local = fecha_partido[0]
                 result_visita = fecha_partido[1]
 
         def find_team(team):
-            i=0
+            i = 0
             uni_team = unidecode.unidecode(team.upper())
-            #ñapa
-            if uni_team == 'ATLETICO'  : uni_team = 'ATH MADRID'
-            if uni_team == 'ATHLETIC'  : uni_team = ' ATH BILBAO'
-            if uni_team == 'ESPANYOL'  : uni_team = 'ESPANOL'
-            if uni_team == 'RAYO'      : uni_team = 'VALLECANO'
+            # ñapa
+            if uni_team == 'ATLETICO': uni_team = 'ATH MADRID'
+            if uni_team == 'ATHLETIC': uni_team = ' ATH BILBAO'
+            if uni_team == 'ESPANYOL': uni_team = 'ESPANOL'
+            if uni_team == 'RAYO': uni_team = 'VALLECANO'
             while i < len(list_sp_teams):
                 if uni_team == list_sp_teams[i].upper():
                     return list_sp_teams[i]
                 elif list_sp_teams[i].upper() in uni_team:
                     return list_sp_teams[i]
 
-                i +=1
-            
+                i += 1
+
             return team
 
-        strLocal = row.find_all("span", {"class": "nombre-equipo"})[0].contents[0]
-        strVisita= row.find_all("span", {"class": "nombre-equipo"})[1].contents[0]
+        strLocal = row.find_all(
+            "span", {"class": "nombre-equipo"})[0].contents[0]
+        strVisita = row.find_all(
+            "span", {"class": "nombre-equipo"})[1].contents[0]
 
         points_home, points_away = cLeague.predict_points(
-            find_team(strLocal), 
+            find_team(strLocal),
             find_team(strVisita))
 
         # calcular acierto o fallo
@@ -157,10 +163,10 @@ def get_current_jornada(jornada='none', cLeague= None):
                 acierto = True
                 icono = 'done'
         except Exception as ex:
-            acierto= None
-            icono= 'noplay'
+            acierto = None
+            icono = 'noplay'
             pass
-        
+
         array_resultados.append({
             'local': strLocal,
             'visitante': strVisita,
@@ -180,26 +186,28 @@ def get_current_jornada(jornada='none', cLeague= None):
         'array_resultados': array_resultados
     }
 
+
 def _get_chromeoptions(class_name, url):
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    
-    
+
     if (os.environ.get("PRODUCTION")):
         # para heroku
-        driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+        driver = webdriver.Chrome(executable_path=os.environ.get(
+            "CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     else:
         # para desarrollo
-        driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
+        driver = webdriver.Chrome(
+            'chromedriver', chrome_options=chrome_options)
 
     # div partidos
     # waiting for partidos to load
     partidos_container = None
     try:
-        delay = 10 # seconds
+        delay = 10  # seconds
         wait = WebDriverWait(driver, delay)
         driver.get(url)
         partidos_container = wait.until(
@@ -211,7 +219,26 @@ def _get_chromeoptions(class_name, url):
 
     return partidos_container
 
-def get_pocker_bit(home, visit, alg_win):
+def confirmar_apuestas(valor1, valorx, valor2, alg_win):
+    # fix convert to float
+    valor1 = valor1.replace(",",".")
+    valor2 = valor2.replace(",",".")
+    valorx = valorx.replace(",",".")
+    if (float(valor1) < float(valorx)) \
+        and (float(valor1) < float(valor2)):
+        return 'Confirmado' if alg_win == 'home' else 'Diferencia'
+
+    elif (float(valor2) < float(valorx)) \
+        and (float(valor2) < float(valor1)):
+        return 'Confirmado' if alg_win == 'away' else 'Diferencia'
+
+    elif (float(valorx) < float(valor1)) \
+        and (float(valorx) < float(valor2)):
+        return 'Confirmado' if alg_win == 'draw' else 'Diferencia'
+                
+
+
+async def get_pocker_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -233,14 +260,14 @@ def get_pocker_bit(home, visit, alg_win):
                 obj_return['valor_x'] = apuestas[1].text.strip()
                 obj_return['valor_2'] = apuestas[2].text.strip()
                 obj_return['found'] = 'True'
-                obj_return['text']= 'Confirmado'
+                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
                 break   
 
         except Exception as ex:
             pass
     return obj_return
 
-def get_william_bit(home, visit, alg_win):
+async def get_william_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -264,12 +291,12 @@ def get_william_bit(home, visit, alg_win):
                 obj_return['valor_x'] = apuestas[1].text.strip()
                 obj_return['valor_2'] = apuestas[2].text.strip()
                 obj_return['found'] = 'True'
-                obj_return['text']= 'Confirmado'
+                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
                 break                
 
     return obj_return
 
-def get_bwin_bit(home, visit, alg_win):
+async def get_bwin_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -291,9 +318,10 @@ def get_bwin_bit(home, visit, alg_win):
                 obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
                 obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
                 obj_return['found'] = 'True'
-                obj_return['text'] = 'Diferencia'
+                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
 
                 # confirmar
+                """
                 if (float(obj_return['valor_1']) < float(obj_return['valor_x'])) \
                     and (float(obj_return['valor_1']) < float(obj_return['valor_2'])):
                     obj_return['text'] = 'Confirmado' if alg_win == 'home' else 'Diferencia'
@@ -305,13 +333,27 @@ def get_bwin_bit(home, visit, alg_win):
                 elif (float(obj_return['valor_x']) < float(obj_return['valor_1'])) \
                     and (float(obj_return['valor_x']) < float(obj_return['valor_2'])):
                     obj_return['text'] = 'Confirmado' if alg_win == 'draw' else 'Diferencia'
-                
+                """
                 break                
 
         except Exception as ex:
             pass
 
     return obj_return
+
+def multiTasks(home, visit, alg_win):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    tasks = [
+        loop.create_task(get_bwin_bit(home, visit, alg_win)),
+        loop.create_task(get_william_bit(home, visit, alg_win)),
+        loop.create_task(get_pocker_bit(home, visit, alg_win)),
+    ]
+    loop.run_until_complete(asyncio.wait(tasks))
+    loop.close()
+
+    return tasks[0]._result, tasks[1]._result, tasks[2]._result
+
 class League():
 
     def __init__(self, country='SP1'):
@@ -465,7 +507,7 @@ class League():
                         dict_table.loc[dict_table['Team'] == away, 'PG'] += 1
                         dict_table.loc[dict_table['Team'] == home, 'PP'] += 1
 
-                    #storing every match result
+                    # storing every match result
                     list_points_home.append(round(points_home, 1))
                     list_points_away.append(round(points_away, 1))
             

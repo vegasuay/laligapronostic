@@ -42,14 +42,9 @@ def goal():
 
     # leer apustas
     uni_home = unidecode.unidecode(home.upper())
-    uni_visit= unidecode.unidecode(visit.upper())
+    uni_visit= unidecode.unidecode(visit.upper())    
     #print('entra en bwin')
-    bwinValue = data.get_bwin_bit(uni_home, uni_visit, porc_win)
-    #print('entra en willian')
-    willianValue = data.get_william_bit(uni_home, uni_visit, porc_win)
-    #print('entra en poker')
-    pokerValue = data.get_pocker_bit(uni_home, uni_visit, porc_win)
-    #print('sale poker')
+    bwinValue, willianValue, pokerValue  = data.multiTasks(uni_home, uni_visit, porc_win)
 
     # scraping table clasification
     pos_local= wins_local= lose_local= emp_local = \
