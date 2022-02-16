@@ -294,16 +294,16 @@ def get_bwin_bit(home, visit, alg_win):
                 obj_return['text'] = 'Diferencia'
 
                 # confirmar
-                if (float(obj_return['valor_1']) > float(obj_return['valor_x'])) \
-                    and (float(obj_return['valor_1']) > float(obj_return['valor_2'])):
+                if (float(obj_return['valor_1']) < float(obj_return['valor_x'])) \
+                    and (float(obj_return['valor_1']) < float(obj_return['valor_2'])):
                     obj_return['text'] = 'Confirmado' if alg_win == 'home' else 'Diferencia'
                 
-                if (float(obj_return['valor_2']) > float(obj_return['valor_x'])) \
-                    and (float(obj_return['valor_2']) > float(obj_return['valor_1'])):
+                elif (float(obj_return['valor_2']) < float(obj_return['valor_x'])) \
+                    and (float(obj_return['valor_2']) < float(obj_return['valor_1'])):
                     obj_return['text'] = 'Confirmado' if alg_win == 'away' else 'Diferencia'
 
-                if (float(obj_return['valor_x']) > float(obj_return['valor_1'])) \
-                    and (float(obj_return['valor_x']) > float(obj_return['valor_2'])):
+                elif (float(obj_return['valor_x']) < float(obj_return['valor_1'])) \
+                    and (float(obj_return['valor_x']) < float(obj_return['valor_2'])):
                     obj_return['text'] = 'Confirmado' if alg_win == 'draw' else 'Diferencia'
                 
                 break                
