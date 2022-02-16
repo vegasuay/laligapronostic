@@ -502,14 +502,22 @@ hr.vertical {
     background-color: transparent;
 }
 
-.badge-light-error {
+.badge-light-nofound {
     background-color: #ddf8fc;
     color: #4fc9da;
+    border: 1px solid #4fc9da;
     font-weight: 600!important;
 }
 .badge-light-success {
     color: #b8d935;
     background-color: #f4fbdb;
+    border: 1px solid #b8d935;
+    font-weight: 600!important;
+}
+.badge-light-error {
+    color: #bd2130;
+    background-color: #e9967a5e;
+    border: 1px solid #bd2130;
     font-weight: 600!important;
 }
 

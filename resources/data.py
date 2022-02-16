@@ -143,15 +143,23 @@ def get_current_jornada(jornada='none', cLeague= None):
         # calcular acierto o fallo
         acierto = False
         icono = 'close'
-        if (result_local > result_visita) and (points_home > points_away):
-            acierto = True
-            icono = 'done'
-        elif (result_local < result_visita) and (points_home < points_away):
-            acierto = True
-            icono = 'done'
-        elif (result_local == result_visita) and (points_home == points_away):
-            acierto = True
-            icono = 'done'
+        try:
+            if (float(result_local) > float(result_visita)) \
+                and (points_home > points_away):
+                acierto = True
+                icono = 'done'
+            elif (float(result_local) < float(result_visita)) \
+                and (points_home < points_away):
+                acierto = True
+                icono = 'done'
+            elif (float(result_local) == float(result_visita)) \
+                and (points_home == points_away):
+                acierto = True
+                icono = 'done'
+        except Exception as ex:
+            acierto= None
+            icono= 'noplay'
+            pass
         
         array_resultados.append({
             'local': strLocal,
@@ -203,7 +211,7 @@ def _get_chromeoptions(class_name, url):
 
     return partidos_container
 
-def get_pocker_bit(home, visit):
+def get_pocker_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -232,7 +240,7 @@ def get_pocker_bit(home, visit):
             pass
     return obj_return
 
-def get_william_bit(home, visit):
+def get_william_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -261,7 +269,7 @@ def get_william_bit(home, visit):
 
     return obj_return
 
-def get_bwin_bit(home, visit):
+def get_bwin_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -283,7 +291,21 @@ def get_bwin_bit(home, visit):
                 obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
                 obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
                 obj_return['found'] = 'True'
-                obj_return['text']= 'Confirmado'
+                obj_return['text'] = 'Diferencia'
+
+                # confirmar
+                if (float(obj_return['valor_1']) > float(obj_return['valor_x'])) \
+                    and (float(obj_return['valor_1']) > float(obj_return['valor_2'])):
+                    obj_return['text'] = 'Confirmado' if alg_win == 'home' else 'Diferencia'
+                
+                if (float(obj_return['valor_2']) > float(obj_return['valor_x'])) \
+                    and (float(obj_return['valor_2']) > float(obj_return['valor_1'])):
+                    obj_return['text'] = 'Confirmado' if alg_win == 'away' else 'Diferencia'
+
+                if (float(obj_return['valor_x']) > float(obj_return['valor_1'])) \
+                    and (float(obj_return['valor_x']) > float(obj_return['valor_2'])):
+                    obj_return['text'] = 'Confirmado' if alg_win == 'draw' else 'Diferencia'
+                
                 break                
 
         except Exception as ex:

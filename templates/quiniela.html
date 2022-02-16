@@ -98,12 +98,15 @@
                                 </div>
                             </td>
                             <!--gana visita-->
-                            <td class="td-border-right td-bg-pronost {{'acierto' if resultado.acierto }}">
+                            <td class="td-border-right td-bg-pronost 
+                                {{'acierto' if resultado.acierto }}">
                                 <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_visita > resultado.pronost_local }}">
                                     <span>2</span>
                                 </div>
                             </td>
-                            <td class="tdmobil {{'acierto' if resultado.acierto }} {{'fallo' if not resultado.acierto}}">
+                            <td class="tdmobil 
+                                {{'acierto' if resultado.acierto }} 
+                                {{'fallo' if not resultado.acierto}}">
                                 <i class="material-icons mr-3">{{resultado.icono}}</i>
                             </td>
                         </tr>

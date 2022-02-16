@@ -31,13 +31,6 @@ def goal():
     league.calculate_strength()
 
     points_home, points_away = league.predict_points(home, visit)
-
-    # leer apustas
-    uni_home = unidecode.unidecode(home.upper())
-    uni_visit= unidecode.unidecode(visit.upper())
-    bwinValue = data.get_bwin_bit(uni_home, uni_visit)
-    willianValue = data.get_william_bit(uni_home, uni_visit)
-    pokerValue = data.get_pocker_bit(uni_home, uni_visit)
     
     # icono del porcentage
     porc_win = 'draw'
@@ -46,6 +39,13 @@ def goal():
     elif (league.prob_home > league.prob_away):
         porc_win = 'home'
     else: porc_win = 'away'
+
+    # leer apustas
+    uni_home = unidecode.unidecode(home.upper())
+    uni_visit= unidecode.unidecode(visit.upper())
+    bwinValue = data.get_bwin_bit(uni_home, uni_visit, porc_win)
+    willianValue = data.get_william_bit(uni_home, uni_visit, porc_win)
+    #pokerValue = data.get_pocker_bit(uni_home, uni_visit, porc_win)
 
     # scraping table clasification
     pos_local= wins_local= lose_local= emp_local = \
@@ -101,7 +101,7 @@ def goal():
         'emp_visita': emp_visita,
         'bwin': bwinValue,
         'william': willianValue,
-        'poker': pokerValue
+        #'poker': pokerValue
     }
 
 
