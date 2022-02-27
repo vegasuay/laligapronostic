@@ -237,7 +237,6 @@ def confirmar_apuestas(valor1, valorx, valor2, alg_win):
         return 'Confirmado' if alg_win == 'draw' else 'Diferencia'
                 
 
-
 async def get_pocker_bit(home, visit, alg_win):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 

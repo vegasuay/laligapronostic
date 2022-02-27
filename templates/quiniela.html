@@ -6,13 +6,13 @@
     <div class="search-bar bck-jor p-2">
         <form action="{{ url_for('quiniela')}}">
             <div class="row">
-                <div class="d-flex form-group col-lg-2 jorn-anterior">
+                <div class="d-flex form-group col-4 jorn-anterior">
                     <button name="btnjornada-ant" value="{{int_jornada - 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl">
                     Jornada {{int_jornada - 1}}
                     </button>
                 </div>
 
-                <div class="d-flex align-items-center form-group col-lg-8 jorn-center ">
+                <div class="d-flex align-items-center form-group col-4 jorn-center ">
                     <div>
                         <select name=jornada class="form-control form-control-lg" onchange="this.form.submit()">
                             {% for jornada in jornadas %}
@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-                <div class="d-flex form-group col-lg-2 jorn-posterior">
+                <div class="d-flex form-group col-4 jorn-posterior">
                     <button name="btnjornada-sig" value="{{int_jornada + 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl">
                         Jornada {{int_jornada + 1}}
                     </button>
@@ -106,7 +106,7 @@
                             </td>
                             <td class="tdmobil 
                                 {{'acierto' if resultado.acierto }} 
-                                {{'fallo' if not resultado.acierto}}">
+                                {{'fallo' if resultado.acierto == False}}">
                                 <i class="material-icons mr-3">{{resultado.icono}}</i>
                             </td>
                         </tr>
