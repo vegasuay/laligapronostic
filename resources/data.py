@@ -27,9 +27,7 @@ def get_current_teams(country='SP1'):
     if current_month > 7:
         index_year += 1
 
-    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/"
-        + str(index_year-1) + str(index_year) + "/"
-        + country + ".csv")
+    df = pd.read_csv("https://www.football-data.co.uk/mmz4281/"+ str(index_year-1) + str(index_year) + "/"+ country + ".csv")
 
     df_all = [df['AwayTeam'], df['HomeTeam']]
     teams = pd.concat(df_all)
@@ -107,8 +105,7 @@ def get_current_jornada(jornada='none', cLeague=None):
         result_local = 'A'
         result_visita = 'P'
         if (len(row.find_all("a", {"class": "resultado"})) > 0):
-            txt_result = row.find_all("a", {"class": "resultado"})[
-                                      0].contents[0]
+            txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
             txt_result = txt_result.replace('\n', '').split("-")
 
             if len(txt_result) > 1:
