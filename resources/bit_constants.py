@@ -70,3 +70,4 @@ POKER = {
 BWIN_URL= 'https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829'
 WILLIAM_URL = 'https://sports.williamhill.es/betting/es-es/football/competitions/OB_TY338/Espana-LaLiga-Santander/matches/OB_MGMB/Ganador-del-partido'
 POKER_URL = 'https://www.pokerstarssports.es/#/soccer/competitions/10679937'
+FOOTBALL_DATA_URL = "https://www.football-data.co.uk/mmz4281/"

@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 from resources import clasif
 import unidecode
 from resources.bit_constants import \
-    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL
+    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, FOOTBALL_DATA_URL
 
 
 def get_current_teams(country='SP1'):
@@ -27,12 +27,12 @@ def get_current_teams(country='SP1'):
     if current_month > 7:
         index_year += 1
 
-    df = pd.read_csv("https://www.football-data.co.uk/mmz4281/"+ str(index_year-1) + str(index_year) + "/"+ country + ".csv")
+    #df = pd.read_csv(FOOTBALL_DATA_URL + str(index_year-1) + str(index_year) + "/"+ country + ".csv")
+    df = _read_football_data(index_year-1, index_year)
 
     df_all = [df['AwayTeam'], df['HomeTeam']]
     teams = pd.concat(df_all)
     return teams.unique()
-
 
 def get_current_clasification():
     """
@@ -233,6 +233,11 @@ def confirmar_apuestas(valor1, valorx, valor2, alg_win):
         and (float(valorx) < float(valor2)):
         return 'Confirmado' if alg_win == 'draw' else 'Diferencia'
                 
+def _read_football_data(y_from, y_to, country = 'SP1'):
+    return pd.read_csv(FOOTBALL_DATA_URL + 
+         str(y_from) + 
+         str(y_to) + "/" + 
+         country + ".csv")
 
 async def get_pocker_bit(home, visit, alg_win):
     obj_return = {
@@ -373,8 +378,8 @@ class League():
             frames.append(self.__filter_important_column(self, df, i))
 
         # leer liga actual desde url
-        df = pd.read_csv(
-            "http://www.football-data.co.uk/mmz4281/" + str(index_year - 1) + str(index_year) + "/" + country + ".csv")
+        #df = pd.read_csv("http://www.football-data.co.uk/mmz4281/" + str(index_year - 1) + str(index_year) + "/" + country + ".csv")
+        df = _read_football_data(index_year-1, index_year)
         frames.append(self.__filter_important_column(self, df, index_year))
 
         self.dict_historical_data[country] = pd.concat(frames)
