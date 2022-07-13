@@ -12,11 +12,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
+from sqlalchemy import null
 from resources import clasif
 import unidecode
 from resources.bit_constants import \
-    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, FOOTBALL_DATA_URL
-
+    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, FOOTBALL_DATA_URL,TU_LIGA, RESULTADOS_AS
 
 def get_current_teams(country='SP1'):
 
@@ -24,15 +24,21 @@ def get_current_teams(country='SP1'):
     current_year = (datetime.datetime.now()).year
     current_month = (datetime.datetime.now()).month
     index_year = int(str(current_year)[2:4])
-    if current_month > 7:
+    if current_month >= 7:
         index_year += 1
 
     #df = pd.read_csv(FOOTBALL_DATA_URL + str(index_year-1) + str(index_year) + "/"+ country + ".csv")
-    df = _read_football_data(index_year-1, index_year)
+    teams = pd.DataFrame(columns=['AwayTeam','HomeTeam'])
+    try:
+        df = _read_football_data(index_year-1, index_year)
 
-    df_all = [df['AwayTeam'], df['HomeTeam']]
-    teams = pd.concat(df_all)
-    return teams.unique()
+        df_all = [df['AwayTeam'], df['HomeTeam']]
+        teams = pd.concat(df_all)
+        return teams.unique()
+    except Exception as ex:
+        return pd.DataFrame(columns=['Liga no comenzada'])
+
+    
 
 def get_current_clasification():
     """
@@ -43,7 +49,7 @@ def get_current_clasification():
     list_classif = []
     cabecera = True
 
-    url = "https://www.siguetuliga.com/liga/primera-division-laliga-santander/clasificacion"
+    url = TU_LIGA
     html = requests.get(url).content
     soup = BeautifulSoup(html)
     table = soup.find(id='clasificacion')
@@ -67,7 +73,6 @@ def get_current_clasification():
 
     return list_classif
 
-
 def get_current_jornada(jornada='none', cLeague=None):
     """
     obtiene de la web de as los resultados de enfrentamientos
@@ -83,9 +88,9 @@ def get_current_jornada(jornada='none', cLeague=None):
         index_year += 1
 
     if jornada == 'none':
-        url = "https://resultados.as.com/resultados/futbol/primera/jornada/"
+        url = RESULTADOS_AS + "jornada/"
     else:
-        url = "https://resultados.as.com/resultados/futbol/primera/" \
+        url = RESULTADOS_AS \
             + "20" + str(index_year - 1) + "_20" + str(index_year) + "/" \
             + "jornada/regular_a_" \
             + jornada + "/"
@@ -182,7 +187,6 @@ def get_current_jornada(jornada='none', cLeague=None):
         'fecha_evento': fecha_evento[0].contents[0],
         'array_resultados': array_resultados
     }
-
 
 def _get_chromeoptions(class_name, url):
     chrome_options = webdriver.ChromeOptions()
@@ -368,7 +372,7 @@ class League():
         current_year = (datetime.datetime.now()).year
         current_month = (datetime.datetime.now()).month
         index_year = int(str(current_year)[2:4])
-        if current_month > 7:
+        if current_month >= 7:
             index_year +=1
 
         # leer desde historico csv
