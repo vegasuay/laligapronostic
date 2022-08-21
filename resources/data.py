@@ -38,8 +38,6 @@ def get_current_teams(country='SP1'):
     except Exception as ex:
         return pd.DataFrame(columns=['Liga no comenzada'])
 
-    
-
 def get_current_clasification():
     """
     obtiene de la web siguetuliga.com la posicion, partidos, puntos
@@ -144,6 +142,7 @@ def get_current_jornada(jornada='none', cLeague=None):
         strVisita = row.find_all(
             "span", {"class": "nombre-equipo"})[1].contents[0]
 
+        # Predecir resultado
         points_home, points_away = cLeague.predict_points(
             find_team(strLocal),
             find_team(strVisita))
@@ -178,7 +177,10 @@ def get_current_jornada(jornada='none', cLeague=None):
             'pronost_visita': points_away,
             'acierto': acierto,
             'icono': icono,
-            'count': idx + 1
+            'count': idx + 1,
+            'bwin': 'Diferencia',
+            'william': 'Diferencia',
+            'poker': 'Diferencia'
         })
 
     return {
@@ -227,15 +229,18 @@ def confirmar_apuestas(valor1, valorx, valor2, alg_win):
     valorx = valorx.replace(",",".")
     if (float(valor1) < float(valorx)) \
         and (float(valor1) < float(valor2)):
-        return 'Confirmado' if alg_win == 'home' else 'Diferencia'
+        return 'Acierto' if alg_win == 'home' else 'Diferencia'
 
     elif (float(valor2) < float(valorx)) \
         and (float(valor2) < float(valor1)):
-        return 'Confirmado' if alg_win == 'away' else 'Diferencia'
+        return 'Acierto' if alg_win == 'away' else 'Diferencia'
 
     elif (float(valorx) < float(valor1)) \
         and (float(valorx) < float(valor2)):
-        return 'Confirmado' if alg_win == 'draw' else 'Diferencia'
+        return 'Acierto' if alg_win == 'draw' else 'Diferencia'
+
+    else:
+        return 'Diferencia'
                 
 def _read_football_data(y_from, y_to, country = 'SP1'):
     return pd.read_csv(FOOTBALL_DATA_URL + 
@@ -243,13 +248,13 @@ def _read_football_data(y_from, y_to, country = 'SP1'):
          str(y_to) + "/" + 
          country + ".csv")
 
-async def get_pocker_bit(home, visit, alg_win):
+async def get_pocker_bit(home, visit, alg_win, quix_jornada):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
         'text': 'No encontrado'}
-    uni_home_poker = POKER[home]
-    uni_visit_poker = POKER[visit]
+    uni_home_poker = POKER[home] if home is not None else null
+    uni_visit_poker = POKER[visit] if visit is not None else null
 
     for partido in _get_chromeoptions("eventView-soccer", POKER_URL):
         try:
@@ -257,57 +262,108 @@ async def get_pocker_bit(home, visit, alg_win):
             teams = partido.find_elements_by_class_name('event-schedule-participants-name')
             home_read=unidecode.unidecode(teams[0].text.strip().upper())
             visit_read=unidecode.unidecode(teams[1].text.strip().upper())
-            # partido encontrado
-            if home_read == uni_home_poker and visit_read == uni_visit_poker:
-                apuestas = partido.find_elements_by_class_name("button__bet__odds")
 
-                obj_return['valor_1'] = apuestas[0].text.strip()
-                obj_return['valor_x'] = apuestas[1].text.strip()
-                obj_return['valor_2'] = apuestas[2].text.strip()
-                obj_return['found'] = 'True'
-                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
-                break   
+            # viene de quiniela
+            if quix_jornada is not null:
+                for match in quix_jornada:
+                    uni_home_poker = POKER[unidecode.unidecode(match['local'].upper())]
+                    uni_visit_poker = POKER[unidecode.unidecode(match['visitante'].upper())]
+
+                    if home_read == uni_home_poker and visit_read == uni_visit_poker:
+                        apuestas = partido.find_elements_by_class_name("button__bet__odds")
+                        porc_win = 'draw'
+                        if (match['pronost_local'] > match['pronost_visita']):
+                            porc_win = 'home'
+                        elif (match['pronost_local'] < match['pronost_visita']):
+                            porc_win = 'away'
+
+                        valor_1 = apuestas[0].text.strip()
+                        valor_x = apuestas[1].text.strip()
+                        valor_2 = apuestas[2].text.strip()
+                        match['poker'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
+
+                        break
+            else:
+                # partido encontrado
+                if home_read == uni_home_poker and visit_read == uni_visit_poker:
+                    apuestas = partido.find_elements_by_class_name("button__bet__odds")
+
+                    obj_return['valor_1'] = apuestas[0].text.strip()
+                    obj_return['valor_x'] = apuestas[1].text.strip()
+                    obj_return['valor_2'] = apuestas[2].text.strip()
+                    obj_return['found'] = 'True'
+                    obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
+                    break   
 
         except Exception as ex:
             pass
+
     return obj_return
 
-async def get_william_bit(home, visit, alg_win):
+async def get_william_bit(home, visit, alg_win, quix_jornada):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
         'text': 'No encontrado'}
-    uni_home_william = WILLIAM[home]
-    uni_visit_william = WILLIAM[visit]
+    uni_home_william = WILLIAM[home] if home is not None else null
+    uni_visit_william = WILLIAM[visit] if visit is not None else null
 
     partidos_container = _get_chromeoptions("football-app", WILLIAM_URL)     
     for partido in partidos_container[0].find_elements_by_css_selector('article.sp-o-market'):
-        title= partido.find_elements_by_css_selector('main.sp-o-market__title')
-        if (title[0].text.__contains__(' ₋ ')):
-            # div equipos
-            teams = title[0].text.split(' ₋ ')
-            home_read = unidecode.unidecode(teams[0].strip().upper())
-            visit_read = unidecode.unidecode(teams[1].strip().upper())
-            # partido encontrado
-            if home_read == uni_home_william and visit_read == uni_visit_william:
-                apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
-                
-                obj_return['valor_1'] = apuestas[0].text.strip()
-                obj_return['valor_x'] = apuestas[1].text.strip()
-                obj_return['valor_2'] = apuestas[2].text.strip()
-                obj_return['found'] = 'True'
-                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
-                break                
+        try:
+
+            title= partido.find_elements_by_css_selector('main.sp-o-market__title')
+            if (title[0].text.__contains__(' ₋ ')):
+                # div equipos
+                teams = title[0].text.split(' ₋ ')
+                home_read = unidecode.unidecode(teams[0].strip().upper())
+                visit_read = unidecode.unidecode(teams[1].strip().upper())
+
+                # viene de quiniela
+            if quix_jornada is not null:
+                for match in quix_jornada:
+                    uni_home_william = WILLIAM[unidecode.unidecode(match['local'].upper())]
+                    uni_visit_william = WILLIAM[unidecode.unidecode(match['visitante'].upper())]
+
+                    if home_read == uni_home_william and visit_read == uni_visit_william:
+                        apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
+                        porc_win = 'draw'
+                        if (match['pronost_local'] > match['pronost_visita']):
+                            porc_win = 'home'
+                        elif (match['pronost_local'] < match['pronost_visita']):
+                            porc_win = 'away'
+
+                        valor_1 = apuestas[0].text.strip()
+                        valor_x = apuestas[1].text.strip()
+                        valor_2 = apuestas[2].text.strip()
+                        match['william'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
+
+                        break
+            else:
+                # partido encontrado
+                if home_read == uni_home_william and visit_read == uni_visit_william:
+                    apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
+                    
+                    obj_return['valor_1'] = apuestas[0].text.strip()
+                    obj_return['valor_x'] = apuestas[1].text.strip()
+                    obj_return['valor_2'] = apuestas[2].text.strip()
+                    obj_return['found'] = 'True'
+                    obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
+                    break    
+        
+        except Exception as ex:
+            pass            
 
     return obj_return
 
-async def get_bwin_bit(home, visit, alg_win):
+async def get_bwin_bit(home, visit, alg_win, quix_jornada):
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
         'text': 'No encontrado'}
-    uni_home_bwin = BWIN[home]
-    uni_visit_bwin = BWIN[visit]
+
+    uni_home_bwin = BWIN[home] if home is not None else null
+    uni_visit_bwin = BWIN[visit] if visit is not None else null
 
     for partido in _get_chromeoptions("grid-event-wrapper", BWIN_URL):
         try:
@@ -315,44 +371,53 @@ async def get_bwin_bit(home, visit, alg_win):
             teams = partido.find_elements_by_class_name('participant')
             home_read = unidecode.unidecode(teams[0].text.strip().upper())
             visit_read = unidecode.unidecode(teams[1].text.strip().upper())
-            # partido encontrado
-            if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
-                apuestas = partido.find_elements_by_class_name("option-indicator")
-                
-                obj_return['valor_1'] = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
-                obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
-                obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
-                obj_return['found'] = 'True'
-                obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
 
-                # confirmar
-                """
-                if (float(obj_return['valor_1']) < float(obj_return['valor_x'])) \
-                    and (float(obj_return['valor_1']) < float(obj_return['valor_2'])):
-                    obj_return['text'] = 'Confirmado' if alg_win == 'home' else 'Diferencia'
-                
-                elif (float(obj_return['valor_2']) < float(obj_return['valor_x'])) \
-                    and (float(obj_return['valor_2']) < float(obj_return['valor_1'])):
-                    obj_return['text'] = 'Confirmado' if alg_win == 'away' else 'Diferencia'
+            # viene de quiniela
+            if quix_jornada is not null:
+                for match in quix_jornada:
+                    uni_home_bwin = BWIN[unidecode.unidecode(match['local'].upper())]
+                    uni_visit_bwin = BWIN[unidecode.unidecode(match['visitante'].upper())]
 
-                elif (float(obj_return['valor_x']) < float(obj_return['valor_1'])) \
-                    and (float(obj_return['valor_x']) < float(obj_return['valor_2'])):
-                    obj_return['text'] = 'Confirmado' if alg_win == 'draw' else 'Diferencia'
-                """
-                break                
+                    if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
+                        apuestas = partido.find_elements_by_class_name("option-indicator")
+                        porc_win = 'draw'
+                        if (match['pronost_local'] > match['pronost_visita']):
+                            porc_win = 'home'
+                        elif (match['pronost_local'] < match['pronost_visita']):
+                            porc_win = 'away'
+
+                        valor_1 = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
+                        valor_x = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
+                        valor_2 = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
+                        match['bwin'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
+
+                        break
+
+            else:
+                # viene de pronostico partido
+                if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
+                    apuestas = partido.find_elements_by_class_name("option-indicator")
+                    
+                    obj_return['valor_1'] = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
+                    obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
+                    obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
+                    obj_return['found'] = 'True'
+                    obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
+
+                    break                
 
         except Exception as ex:
             pass
 
     return obj_return
 
-def multiTasks(home, visit, alg_win):
+def multiTasks(home, visit, alg_win, quiniela=null):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     tasks = [
-        loop.create_task(get_bwin_bit(home, visit, alg_win)),
-        loop.create_task(get_william_bit(home, visit, alg_win)),
-        loop.create_task(get_pocker_bit(home, visit, alg_win)),
+        loop.create_task(get_bwin_bit(home, visit, alg_win, quiniela)),
+        loop.create_task(get_william_bit(home, visit, alg_win, quiniela)),
+        loop.create_task(get_pocker_bit(home, visit, alg_win, quiniela)),
     ]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
@@ -416,8 +481,6 @@ class League():
             .groupby(['Team'], as_index=False)[['HomeScored', 'HomeConceded']] \
             .mean()
 
-        # se suman todos los goles metidos jugando fuera y encajados (ultimos 5 años)
-        # por cada equipo se hace la media de sus goles metidos y encajados como visitante
         visit = self.dict_historical_data[self.country][['VisitTeam', 'HomeGoals', 'VisitGoals']] \
             .rename(columns={'VisitTeam': 'Team', 'HomeGoals': 'VisitConceded', 'VisitGoals': 'VisitScored'}) \
             .groupby(['Team'], as_index=False)[['VisitScored', 'VisitConceded']] \

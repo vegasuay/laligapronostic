@@ -13,7 +13,7 @@
 
                     <!--Home Select-->
                     <div class="d-flex linerseparator align-items-center form-group col-md-12 col-lg-3">
-                        <select name="selecthome" class="form-control form-control-lg">
+                        <select id="select-home" name="selecthome" class="form-control form-control-lg">
                             {% for team in teams %}
                             <option>{{ team }}</option>
                             {% endfor %}
@@ -22,7 +22,7 @@
 
                     <!--Visit Select-->
                     <div class="d-flex align-items-center form-group no-divider col-md-12 col-lg-3">
-                        <select name="selectvisit" class="form-control form-control-lg">
+                        <select id="select-visit" name="selectvisit" class="form-control form-control-lg">
                             {% for team in teams %}
                             <option>{{ team }}</option>
                             {% endfor %}
@@ -40,6 +40,8 @@
 
                             function myFunction() {
                                 document.getElementById('searchSpinn').style.display = "inline-flex";
+                                $('#select-home').addClass('selectDisabled');
+                                $('#select-visit').addClass('selectDisabled');
                             }
                         </script>
                         
