@@ -13,7 +13,10 @@
             </div>
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">
-                    {{data.home}} <small class="text-muted">/ {{data.pos_local}}</small>
+                    <small class="text-muted">{{data.pos_local}}</small>
+                    {{data.home}} 
+                    <span class="badge rounded-pill ms-2 bg-200 badget-puntos text-success">{{data.pts_local}} 
+                        <a style="font-size: initial;">puntos</a></span>
                 </h1>
                 <ul class="list-unstyled cf list-group list-group-horizontal border-radius-xl mt-3">
                     <li class="li-left-radius">
@@ -26,9 +29,14 @@
                         <p class="txt-ppal">perdidos</p>
                         <hr class="vertical hr-white">
                     </li>
-                    <li class="li-right-radius">
+                    <li>
                         <p class="txt-dato-ppal">{{data.emp_local}}</p>
                         <p class="txt-ppal">empatados</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li class="li-right-radius">
+                        <p class="txt-dato-ppal" style="color:white;">{{data.jug_local}}</p>
+                        <p class="txt-ppal">jugados</p>
                     </li>
                 </ul>
             </div>
@@ -73,7 +81,12 @@
             </div>
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">
-                    {{data.visit}} <small class="text-muted">/ {{data.pos_visita}}</small></h1>
+                    <small class="text-muted">{{data.pos_visita}}</small>
+                    {{data.visit}}
+                    <span class="badge rounded-pill ms-2 bg-200 badget-puntos text-success">{{data.pts_visita}}
+                        <a style="font-size: initial;">puntos</a>
+                    </span>
+                </h1>
                 <ul class="list-unstyled cf list-group list-group-horizontal border-radius-xl mt-3">
                     <li class="li-left-radius">
                         <p class="txt-dato-ppal">{{data.wins_visita}}</p>
@@ -85,9 +98,14 @@
                         <p class="txt-ppal">perdidos</p>
                         <hr class="vertical hr-white">
                     </li>
-                    <li class="li-right-radius">
+                    <li>
                         <p class="txt-dato-ppal">{{data.emp_visita}}</p>
                         <p class="txt-ppal">empatados</p>
+                        <hr class="vertical hr-white">
+                    </li>
+                    <li class="li-right-radius">
+                        <p class="txt-dato-ppal" style="color:white;">{{data.jug_visita}}</p>
+                        <p class="txt-ppal">jugados</p>
                     </li>
                 </ul>
             </div>
@@ -150,10 +168,10 @@
                         <span class="text-totales">/ {{data.tm_marcados_encasa}}</span>
                     </h1>
 
-                    <p class="text-sm">
-                        Valor de la media de goles marcados por el equipo local en su campo en las últimas 5 temporadas,
+                    <p class="text-sm color-grey">
+                        Media de goles marcados por el equipo local en su campo en las últimas 5 temporadas,
                         y
-                        la media de goles en local de todos los equipo
+                        la media de goles en local de todos los equipos
                     </p>
                 </div>
                 <hr class="vertical dark">
@@ -176,10 +194,10 @@
                         <span class="text-totales">/ {{data.tm_recibidos_encasa}}</span>
                     </h1>
 
-                    <p class="text-sm">
-                        Valor de la media de goles recibidos por el equipo local en su campo en las últimas 5
+                    <p class="text-sm color-grey">
+                        Media de goles recibidos por el equipo local en su campo en las últimas 5
                         temporadas, y
-                        la media de goles recibidos en local de todos los equipo</p>
+                        la media de goles recibidos en local de todos los equipos</p>
                 </div>
                 <hr class="vertical dark">
             </div>
@@ -201,9 +219,9 @@
                         <span class="text-totales">/ {{data.tm_marcados_envisita}}</span>
                     </h1>
 
-                    <p class="text-sm">
-                        Valor de la media de goles marcados por el equipo visitante fuera de su campo en las últimas 5
-                        temporadas, y la media de goles marcados fuera de casa de todos los equipo</p>
+                    <p class="text-sm color-grey">
+                        Media de goles marcados por el equipo visitante fuera de su campo en las últimas 5
+                        temporadas, y la media de goles marcados fuera de casa de todos los equipos</p>
                 </div>
                 <hr class="vertical dark">
             </div>
@@ -225,9 +243,9 @@
                         <span class="text-totales">/ {{data.tm_recibidos_envisita}}</span>
                     </h1>
 
-                    <p class="text-sm">
-                        Valor de la media de goles recibidos por el equipo visitante fuera de su campo en las últimas 5
-                        temporadas, y la media de goles recibidos fuera de casa de todos los equipo</p>
+                    <p class="text-sm color-grey">
+                        Media de goles recibidos por el equipo visitante fuera de su campo en las últimas 5
+                        temporadas, y la media de goles recibidos fuera de casa de todos los equipos</p>
                 </div>
             </div>
         </div>

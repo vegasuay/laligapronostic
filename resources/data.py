@@ -442,7 +442,7 @@ class League():
 
         # leer desde historico csv
         path = os.getcwd()
-        for i in range(index_year - 5, index_year):
+        for i in range(index_year - 4, index_year):
             df = pd.read_csv(os.path.join(path + "/resources/files/" + str(i - 1) + str(i) + "_" + country + ".csv"))
             frames.append(self.__filter_important_column(self, df, i))
 
@@ -486,7 +486,7 @@ class League():
             .groupby(['Team'], as_index=False)[['VisitScored', 'VisitConceded']] \
             .mean()
 
-        self.df_league_strength = pd.merge(home, visit, on='Team')
+        self.df_league_strength = pd.merge(home, visit, on='Team', how='left')
 
         # calcular la media de valores de cada una de las 4 columnas
         self.average_home_scored = home['HomeScored'].mean()  # marcados en casa
@@ -542,6 +542,10 @@ class League():
             
             return round(points_home,1), round(points_away,1)
         else:
+            self.prob_draw=0
+            self.prob_home=0
+            self.prob_away=0
+
             return 0, 0
 
     def my_pronostic(self):

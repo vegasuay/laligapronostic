@@ -5,6 +5,7 @@ from resources import \
 from flask import request
 from resources import data
 import unidecode
+import math
 
 app = Flask(__name__)
 
@@ -43,12 +44,12 @@ def goal():
     # leer apustas
     uni_home = unidecode.unidecode(home.upper())
     uni_visit= unidecode.unidecode(visit.upper())    
-    #print('entra en bwin')
+    
     bwinValue, willianValue, pokerValue  = data.multiTasks(uni_home, uni_visit, porc_win)
 
     # scraping table clasification
-    pos_local= wins_local= lose_local= emp_local = \
-        pos_visita= wins_visita= lose_visita = emp_visita = 0
+    pos_local= wins_local= lose_local= emp_local= pts_local = jug_local = \
+        pos_visita= wins_visita= lose_visita = emp_visita= pts_visita= jug_visita = 0
     list_clasif = get_current_clasification()
     
     for obj in list_clasif:
@@ -57,6 +58,8 @@ def goal():
             wins_local= obj.pg;
             lose_local= obj.pp;
             emp_local = obj.pe;
+            pts_local = obj.pts;
+            jug_local = obj.pj;
             continue;
 
         if pos_visita==0 and obj.isTeam(visit):
@@ -64,9 +67,21 @@ def goal():
             wins_visita = obj.pg;
             lose_visita = obj.pp;
             emp_visita = obj.pe;
+            pts_visita = obj.pts;
+            jug_visita = obj.pj;
             continue;
 
     #TODO: ponderar por posicion temporada
+
+    # comprobar nan values
+    league.df_league_strength.HomeScored[home] = \
+        0 if math.isnan(league.df_league_strength.HomeScored[home]) else league.df_league_strength.HomeScored[home]
+    league.df_league_strength.HomeConceded[home] = \
+        0 if math.isnan(league.df_league_strength.HomeConceded[home]) else league.df_league_strength.HomeConceded[home]
+    league.df_league_strength.VisitScored[visit] = \
+        0 if math.isnan(league.df_league_strength.VisitScored[visit]) else league.df_league_strength.VisitScored[visit]
+    league.df_league_strength.VisitConceded[visit] = \
+        0 if math.isnan(league.df_league_strength.VisitConceded[visit]) else league.df_league_strength.VisitConceded[visit]
             
 
     object = {
@@ -94,10 +109,14 @@ def goal():
         'wins_local': wins_local,
         'emp_local': emp_local,
         'lose_local': lose_local,
+        'pts_local': pts_local,
+        'jug_local': jug_local,
         'pos_visita': pos_visita,
         'wins_visita': wins_visita,
         'lose_visita': lose_visita,
         'emp_visita': emp_visita,
+        'pts_visita': pts_visita,
+        'jug_visita': jug_visita,
         'bwin': bwinValue,
         'william': willianValue,
         'poker': pokerValue
