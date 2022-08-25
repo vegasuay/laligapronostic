@@ -2,8 +2,8 @@
 {% block content %}
 <div>
     <div class="container">
-        <h1 class="pt-5">{% block title %} Pronósticos de Fútbol {% endblock %}</h1>
-        <div class="search-bar mt-5 mb-5 p-3 p-lg-1 pl-lg-4">
+        <h1 class="pt-5 tit-mob">Pronósticos de Fútbol</h1>
+        <div class="search-bar p-3 p-lg-1 pl-lg-4">
             <form action="goal" method="post">
                 <div class="row">
                     <div class="d-flex linerseparator align-items-center form-group col-lg-4">
@@ -30,7 +30,8 @@
                     </div>
 
                     <div class="col-lg-2 mt-mobile5">
-                        <button value="submit" class="btn-indexFind btn btn-success btn-block h-100 rounded-xl" id="searchButton">
+                        <button value="submit" class="btn-indexFind btn btn-success btn-block h-100 rounded-xl"
+                            id="searchButton">
                             <span class="spinner-border spinner-border-sm" style="display: none;" role="status"
                                 aria-hidden="true" id="searchSpinn"></span>
                             Buscar
@@ -44,11 +45,61 @@
                                 $('#select-visit').addClass('selectDisabled');
                             }
                         </script>
-                        
+
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <section class="previews">
+        <div class="container w-100">
+            <div class="row">
+                <div class="col-sm-12 col-lg-6 ml-0 text-center mt-4 mb-md-5">
+                    <h2 class="text-left tit-mob">
+                        <img src="https://cdn1.todoporelfutbol.com/images/competitions/small/spain-laliga-logo-1967-43.png"
+                            alt="LaLiga 2022/23" title="LaLiga 2022/23" width="auto">
+                        La Liga
+                    </h2>
+                </div>
+            </div>
+            <div class="col-12 col-lg-12">
+                <div class="card card-table">
+                    <div class="card-header">
+                        <div class="title">Pŕoximos Partidos</div>
+                    </div>
+                    <div class="card-body-mob card-body table-responsive">
+                        {% for resultado in resultados %}
+                        <div class="panel panel-match">
+                            <div class="panel-body panel-row-match">
+                                <div class="row match-row">
+                                    <div class="col-2 col-md-1 col-match-date">
+                                        <a class="hour" data-toggle="tooltip" data-placement="top">
+                                        <span class="datetimeToTimezone">{{resultado.hora}}</span></a>
+                                        <span class="datetimeToTimezone date" data-format="D MMM">{{resultado.dia}}</span>
+                                    </div>
+                                    <div class="col-lg-4 col-7 match-row-team1">
+                                        <a>{{resultado.local}}</a>
+                                        <img src="../static/images/{{resultado.local}}.png" width="26">
+                                    </div>
+                                    <div class="col-2 col-md-1 match-row-result">
+                                        <span class="match-result-bg"><a>vs</a></span>
+                                    </div>
+                                    <div class="col-lg-4 col-7 match-row-team2">
+                                        <img src="../static/images/{{resultado.visitante}}.png" width="26">
+                                        <a>{{resultado.visitante}}</a>
+                                    </div>
+                                    <div class="match-more-arrow d-none d-lg-block">
+                                        <a><i class="material-icons mr-3 h3 mt10">arrow_right_alt</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}

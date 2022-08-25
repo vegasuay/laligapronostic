@@ -1,7 +1,7 @@
 from re import split
 from flask import Flask, render_template
 from resources import \
-    get_current_teams, get_current_clasification, get_current_jornada
+    get_current_teams, get_current_clasification, get_current_jornada, get_next_jornada_index
 from flask import request
 from resources import data
 import unidecode
@@ -12,7 +12,11 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     teams = get_current_teams()
-    return render_template('index.html', teams=teams)
+    obj_jornada = get_next_jornada_index(teams)
+
+    return render_template('index.html', 
+        teams=teams,
+        resultados = obj_jornada['array_resultados'])
 
 
 @app.route('/about')

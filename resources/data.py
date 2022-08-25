@@ -71,6 +71,78 @@ def get_current_clasification():
 
     return list_classif
 
+def get_next_jornada_index(list_sp_teams):
+    """
+    obtiene de la web de as los resultados de enfrentamientos
+
+    :return: object
+    """
+     # si estamos en mes mayor a 7, cambiar temporada
+    current_year = (datetime.datetime.now()).year
+    current_month = (datetime.datetime.now()).month
+    index_year = int(str(current_year)[2:4])
+    if current_month > 7:
+        index_year += 1
+
+    url = RESULTADOS_AS + "jornada/"
+    html = requests.get(url).content
+    soup = BeautifulSoup(html)
+
+    array_jornadas = soup.find_all("span", {"class": "tit-jornada"})
+    fecha_evento = soup.find_all("span", {"class": "fecha-evento"})
+    resultados = soup.find_all("li", {"class": "list-resultado"})
+
+    current_jornada = array_jornadas[0].contents[0]
+    array_resultados = []
+    for idx, row in enumerate(resultados):
+        if (len(row.find_all("a", {"class": "resultado"})) > 0):
+            txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
+            txt_result = txt_result.replace('\n', '').split("-")
+            
+            info_event = row.find_all("div", {"class": "info-evento"})[0].contents[1]
+            info_event = info_event.text.replace('\n', '').lstrip()
+
+            if len(txt_result) > 1:
+                result_local = txt_result[0].strip()
+                result_visita = txt_result[1].strip()
+            elif len(txt_result) == 1:
+                fecha_partido = txt_result[0].strip().split(" ")
+                result_local = fecha_partido[0]
+                result_visita = fecha_partido[1]
+        def find_team(team):
+            i = 0
+            uni_team = unidecode.unidecode(team.upper())
+            # ñapa
+            if uni_team == 'ATLETICO': uni_team = 'ATH MADRID'
+            if uni_team == 'ATHLETIC': uni_team = ' ATH BILBAO'
+            if uni_team == 'ESPANYOL': uni_team = 'ESPANOL'
+            if uni_team == 'RAYO': uni_team = 'VALLECANO'
+            while i < len(list_sp_teams):
+                if uni_team == list_sp_teams[i].upper():
+                    return list_sp_teams[i]
+                elif list_sp_teams[i].upper() in uni_team:
+                    return list_sp_teams[i]
+
+                i += 1
+
+            return team
+
+        strLocal = row.find_all(
+            "span", {"class": "nombre-equipo"})[0].contents[0]
+        strVisita = row.find_all(
+            "span", {"class": "nombre-equipo"})[1].contents[0]
+
+        array_resultados.append({
+            'local': strLocal,
+            'visitante': strVisita,
+            'hora': info_event.split(" ")[1],
+            'dia': info_event.split(" ")[0]
+        })
+
+    return {
+        'array_resultados': array_resultados
+    }
+
 def get_current_jornada(jornada='none', cLeague=None):
     """
     obtiene de la web de as los resultados de enfrentamientos
