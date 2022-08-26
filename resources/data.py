@@ -450,6 +450,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
     for partido in _get_chromeoptions("grid-event-wrapper", BWIN_URL):
         try:
             # div equipos
+            print("entra en partido")
             teams = partido.find_elements_by_class_name('participant')
             home_read = unidecode.unidecode(teams[0].text.strip().upper())
             visit_read = unidecode.unidecode(teams[1].text.strip().upper())
@@ -497,7 +498,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
 def runInParallel(home, visit, alg_win, quiniela=null):
     manager = Manager()
     dict_return = manager.dict()
-    funcs = [get_bwin_bit, get_william_bit,get_pocker_bit]
+    funcs = [get_bwin_bit]
 
     proc = []
     for f in funcs:
@@ -510,7 +511,7 @@ def runInParallel(home, visit, alg_win, quiniela=null):
         
     print('All tasks are done', flush=True)
 
-    return dict_return['bwin'],dict_return['william'],dict_return['pocker']
+    return dict_return['bwin'],None,None
 
 def multiTasks(home, visit, alg_win, quiniela=null):
     loop = asyncio.new_event_loop()
