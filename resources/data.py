@@ -19,6 +19,14 @@ import unidecode
 from resources.bit_constants import \
     BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, FOOTBALL_DATA_URL,TU_LIGA, RESULTADOS_AS
 
+#driver = webdriver.Chrome()
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+
+
 def get_current_teams(country='SP1'):
 
     # si estamos en mes mayor a 7, cambiar temporada
@@ -264,11 +272,7 @@ def get_current_jornada(jornada='none', cLeague=None):
     }
 
 def _get_chromeoptions(class_name, url):
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
+    
 
     if (os.environ.get("PRODUCTION")):
         # para heroku
@@ -283,7 +287,7 @@ def _get_chromeoptions(class_name, url):
     # waiting for partidos to load
     partidos_container = None
     try:
-        delay = 10  # seconds
+        delay = 5  # seconds
         wait = WebDriverWait(driver, delay)
         driver.get(url)
         partidos_container = wait.until(
@@ -374,7 +378,6 @@ def get_pocker_bit(home, visit, alg_win, quix_jornada, dict_return):
 
     print("end poker:")
     dict_return['pocker'] = obj_return
-    #return obj_return
 
 def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
     print("start william:")
@@ -433,7 +436,6 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
 
     print("end william:")
     dict_return['william'] = obj_return
-    #return obj_return
 
 def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
     print("start bwin:")
@@ -491,7 +493,6 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
 
     print("end bwin:")
     dict_return['bwin'] = obj_return
-    #return obj_return
 
 def runInParallel(home, visit, alg_win, quiniela=null):
     manager = Manager()
