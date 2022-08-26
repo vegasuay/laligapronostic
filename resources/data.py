@@ -6,6 +6,7 @@ import glob
 import os
 import requests
 import asyncio
+from multiprocessing import Process, Manager
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -320,7 +321,8 @@ def _read_football_data(y_from, y_to, country = 'SP1'):
          str(y_to) + "/" + 
          country + ".csv")
 
-async def get_pocker_bit(home, visit, alg_win, quix_jornada):
+def get_pocker_bit(home, visit, alg_win, quix_jornada, dict_return):
+    print("start pocker:")
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -370,9 +372,12 @@ async def get_pocker_bit(home, visit, alg_win, quix_jornada):
         except Exception as ex:
             pass
 
-    return obj_return
+    print("end poker:")
+    dict_return['pocker'] = obj_return
+    #return obj_return
 
-async def get_william_bit(home, visit, alg_win, quix_jornada):
+def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
+    print("start william:")
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -426,9 +431,12 @@ async def get_william_bit(home, visit, alg_win, quix_jornada):
         except Exception as ex:
             pass            
 
-    return obj_return
+    print("end william:")
+    dict_return['william'] = obj_return
+    #return obj_return
 
-async def get_bwin_bit(home, visit, alg_win, quix_jornada):
+def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
+    print("start bwin:")
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -481,11 +489,32 @@ async def get_bwin_bit(home, visit, alg_win, quix_jornada):
         except Exception as ex:
             pass
 
-    return obj_return
+    print("end bwin:")
+    dict_return['bwin'] = obj_return
+    #return obj_return
+
+def runInParallel(home, visit, alg_win, quiniela=null):
+    manager = Manager()
+    dict_return = manager.dict()
+    funcs = [get_bwin_bit, get_william_bit,get_pocker_bit]
+
+    proc = []
+    for f in funcs:
+        p = Process(target=f,args=(home, visit, alg_win, quiniela, dict_return))
+        p.start()
+        proc.append(p)
+    
+    for p in proc:
+        p.join()
+        
+    print('All tasks are done', flush=True)
+
+    return dict_return['bwin'],dict_return['william'],dict_return['pocker']
 
 def multiTasks(home, visit, alg_win, quiniela=null):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+    loop._stopping = False
     tasks = [
         loop.create_task(get_bwin_bit(home, visit, alg_win, quiniela)),
         loop.create_task(get_william_bit(home, visit, alg_win, quiniela)),
@@ -493,7 +522,6 @@ def multiTasks(home, visit, alg_win, quiniela=null):
     ]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
-
     return tasks[0]._result, tasks[1]._result, tasks[2]._result
 
 class League():

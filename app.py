@@ -1,7 +1,7 @@
 from re import split
 from flask import Flask, render_template
 from resources import \
-    get_current_teams, get_current_clasification, get_current_jornada, get_next_jornada_index
+    get_current_teams, get_current_clasification, get_current_jornada, get_next_jornada_index, runInParallel
 from flask import request
 from resources import data
 import unidecode
@@ -49,7 +49,8 @@ def goal():
     uni_home = unidecode.unidecode(home.upper())
     uni_visit= unidecode.unidecode(visit.upper())    
     
-    bwinValue, willianValue, pokerValue  = data.multiTasks(uni_home, uni_visit, porc_win)
+    #bwinValue, willianValue, pokerValue  = data.multiTasks(uni_home, uni_visit, porc_win)
+    bwinValue, willianValue, pokerValue = runInParallel(uni_home, uni_visit, porc_win)
 
     # scraping table clasification
     pos_local= wins_local= lose_local= emp_local= pts_local = jug_local = \
