@@ -159,7 +159,8 @@ def quiniela():
     obj_jornada = get_current_jornada(jornada, league)
     jor_actual=int(obj_jornada['current_jornada'].split(" ")[1])
 
-    bwinValue, willianValue, pokerValue  = data.multiTasks(None, None, None, obj_jornada['array_resultados'])
+    #bwinValue, willianValue, pokerValue  = data.multiTasks(None, None, None, obj_jornada['array_resultados'])
+    bwinValue, willianValue, pokerValue = runInParallel(None, None, None, obj_jornada['array_resultados'])
 
     # num of jornadas
     jornadas = list(range(1,obj_jornada['total_jornadas']))

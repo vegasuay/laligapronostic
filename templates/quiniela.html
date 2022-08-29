@@ -82,12 +82,12 @@
                         {% for resultado in resultados %}
                         <tr>
                             <th scope="row" class="tdmobil">{{resultado.count}}</th>
-                            <td>{{resultado.local}}</td>
+                            <td class="lt-right">{{resultado.local}}</td>
                             <td><img src="../static/images/{{resultado.local}}.png"></td>
                             <td class="td-result">{{resultado.result_local}}</td>
                             <td class="td-result">{{resultado.result_visita}}</td>
                             <td><img src="../static/images/{{resultado.visitante}}.png"></td>
-                            <td class="td-border-right">{{resultado.visitante}}</td>
+                            <td class="td-border-right lt-left">{{resultado.visitante}}</td>
                             <!--gana local-->
                             <td class="td-bg-pronost {{'acierto' if resultado.acierto }}">
                                 <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_local > resultado.pronost_visita }}">
