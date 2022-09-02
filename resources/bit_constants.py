@@ -94,6 +94,29 @@ POKER = {
     'R. SOCIEDAD':'REAL SOCIEDAD'
 }
 
+AS = {
+'Celta' : 'Celta',
+'Cádiz' : 'Cadiz',
+'Mallorca' : 'Mallorca',
+'Girona' : 'Girona',
+'Real Madrid' : 'Real Madrid',
+'Betis' : 'Betis',
+'R. Sociedad' : 'Sociedad',
+'Atlético' : 'Ath Madrid',
+'Sevilla' : 'Sevilla',
+'Barcelona' : 'Barcelona',
+'Osasuna' : 'Osasuna',
+'Rayo' : 'Vallecano',
+'Athletic' : 'Ath Bilbao',
+'Espanyol' : 'Espanol',
+'Villarreal' : 'Villarreal',
+'Elche' : 'Elche',
+'Valencia' : 'Valencia',
+'Getafe' : 'Getafe',
+'Real Valladolid' : 'Valladolid',
+'Almería' : 'Almeria'
+}
+
 BWIN_URL= 'https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829'
 WILLIAM_URL = 'https://sports.williamhill.es/betting/es-es/football/competitions/OB_TY338/Espana-LaLiga-Santander/matches/OB_MGMB/Ganador-del-partido'
 POKER_URL = 'https://www.pokerstarssports.es/#/soccer/competitions/10679937'

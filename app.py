@@ -46,11 +46,10 @@ def goal():
     else: porc_win = 'away'
 
     # leer apustas
-    uni_home = unidecode.unidecode(home.upper())
-    uni_visit= unidecode.unidecode(visit.upper())    
+    uni_home = unidecode.unidecode(home)
+    uni_visit= unidecode.unidecode(visit)    
     
-    #bwinValue, willianValue, pokerValue  = data.multiTasks(uni_home, uni_visit, porc_win)
-    bwinValue, willianValue, pokerValue = runInParallel(uni_home, uni_visit, porc_win)
+    bwinValue, willianValue, pokerValue = runInParallel(uni_home.upper(), uni_visit.upper(), porc_win)
 
     # scraping table clasification
     pos_local= wins_local= lose_local= emp_local= pts_local = jug_local = \

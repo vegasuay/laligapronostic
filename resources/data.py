@@ -17,7 +17,8 @@ from sqlalchemy import null
 from resources import clasif
 import unidecode
 from resources.bit_constants import \
-    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, FOOTBALL_DATA_URL,TU_LIGA, RESULTADOS_AS
+    BWIN, BWIN_URL, WILLIAM, WILLIAM_URL, POKER, POKER_URL, \
+        FOOTBALL_DATA_URL,TU_LIGA, RESULTADOS_AS, AS
 
 #driver = webdriver.Chrome()
 chrome_options = webdriver.ChromeOptions()
@@ -108,16 +109,17 @@ def get_next_jornada_index(list_sp_teams):
 
     current_jornada = array_jornadas[0].contents[0]
     array_resultados = []
-    for idx, row in enumerate(resultados):
-        if (len(row.find_all("a", {"class": "resultado"})) > 0):
-            txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
-            txt_result = txt_result.replace('\n', '').split("-")
+
+    for row in resultados:
+        #if (len(row.find_all("a", {"class": "resultado"})) > 0):
+        #    txt_result = row.find_all("a", {"class": "resultado"})[0].contents[0]
+        #    txt_result = txt_result.replace('\n', '').split("-")
             
 
-        elif (len(row.find_all("a", {"class": "cont-enlace-equipo"})) > 0):
-            txt_result = row.find_all("a", {"class": "cont-enlace-equipo"})
-            txt_result[0] = txt_result[0].text
-            txt_result[1] = txt_result[1].text
+        if (len(row.find_all("div", {"class": "equipo-local"})) > 0):
+            txt_result = ["",""]
+            txt_result[0] = row.find_all("div", {"class": "equipo-local"})[0].text
+            txt_result[1] = row.find_all("div", {"class": "equipo-visitante"})[0].text
             #txt_result = txt_result.replace('\n', '')
 
         else:
@@ -135,8 +137,8 @@ def get_next_jornada_index(list_sp_teams):
             result_visita = fecha_partido[1]
 
         array_resultados.append({
-            'local': result_local,
-            'visitante': result_visita,
+            'local': AS[result_local],
+            'visitante': AS[result_visita],
             'hora': info_event.split(" ")[1],
             'dia': info_event.split(" ")[0]
         })
