@@ -541,12 +541,12 @@ class League():
             (self.dict_historical_data[self.country]['VisitTeam'] == visit)] \
                 .rename(columns=
                 {
-                    'Date': 'Fecha Partido',
+                    'Date': 'Fecha',
                     'HomeTeam': 'Local',
-                    'VisitTeam': 'Visitante',
                     'HomeGoals': 'Goles Local',
-                    'VisitGoals': 'Goles Visitantes',
-                    'Season': 'Temporada'
+                    'VisitGoals': 'Goles Visita',
+                    'VisitTeam': 'Visita',
+                    'Season': 'Temp.'
                 })
 
     def calculate_strength(self):

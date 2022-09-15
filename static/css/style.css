@@ -286,6 +286,10 @@
         position: initial !important;
         margin-left: 5px;
     }
+
+    .no-divider{
+        margin-top: 4px;
+    }
 }
 
 .search-bar .form-group {
@@ -412,6 +416,25 @@
     }
     .table {
         font-size: smaller !important;
+        table-layout: fixed;
+    }
+
+    .card-body {
+        padding: 0.8rem !important;
+    }
+
+    .badget-puntos{
+        font-size: large !important;
+    }
+
+    .table-result th {
+        font-size: xx-small;
+    }
+    .table-result td{
+        font-size: xx-small;
+    }
+    .table-result th:nth-child(1) {
+        display: none;
     }
 }
 
