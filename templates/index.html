@@ -7,7 +7,7 @@
             <h1 class="pt-5 tit-mob">Pronósticos de Fútbol</h1>
             <div class="search-bar p-3 p-lg-1 pl-lg-4">
                 <div class="row">
-                    <div class="d-flex linerseparator align-items-center form-group col-lg-4">
+                    <div class="d-flex linerseparator align-items-center form-group col-lg-3">
                         <input type="text" placeholder="Selecciona Local vs Visitante"
                             class="border-0 shadow-0 form-control">
                     </div>
@@ -22,7 +22,7 @@
                     </div>
 
                     <!--Visit Select-->
-                    <div class="d-flex align-items-center form-group no-divider col-md-12 col-lg-3">
+                    <div class="d-flex linerseparator align-items-center form-group no-divider col-md-12 col-lg-3">
                         <select id="select-visit" name="selectvisit" class="form-control form-control-lg">
                             {% for team in teams %}
                             <option>{{ team }}</option>
@@ -30,6 +30,16 @@
                         </select>
                     </div>
 
+                    <!--Toggle apuestas-->
+                    <div class="d-flex align-items-center form-group mt-mobile5 tg-mobile no-divider col-md-12 col-lg-1">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <a class="toggle-apuestas">apuestas</a>
+                    </div>
+
+                    <!--Search-->
                     <div class="col-lg-2 mt-mobile5">
                         <button value="submit" class="btn-indexFind btn btn-success btn-block h-100 rounded-xl"
                             id="searchButton" onclick="this.disabled=true;this.form.submit();">
@@ -88,13 +98,14 @@
                                             <span id="id{{resultado.local}}" class="match-result-bg" onclick="document.forms['form-next-{{resultado.local}}'].submit();">
                                                 <span class="spinner-border spinner-border-sm" role="status" style="display: none;"
                                                     aria-hidden="true" id="searchSpinn-{{resultado.local}}"></span>
-                                                <a>vs</a>
+                                                <a id="vs{{resultado.local}}">vs</a>
                                             </span>
                                             <script>
                                                 document.getElementById("id{{resultado.local}}").addEventListener("click", funcNext);
                     
                                                 function funcNext() {
                                                     document.getElementById('searchSpinn-{{resultado.local}}').style.display = "inline-flex";
+                                                    document.getElementById('vs{{resultado.local}}').style.display = "none";
                                                     $('#select-home').addClass('selectDisabled');
                                                     $('#select-visit').addClass('selectDisabled');
                                                     document.getElementById('searchButton').disabled=true;

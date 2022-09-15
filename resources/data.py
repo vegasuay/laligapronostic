@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas.core.frame import DataFrame
 from scipy.stats import poisson
-import datetime
+import datetime, time
 import glob
 import os
 import requests
@@ -261,9 +261,10 @@ def _get_chromeoptions(class_name, url):
     # waiting for partidos to load
     partidos_container = None
     try:
-        delay = 5  # seconds
+        delay = 10  # seconds
         wait = WebDriverWait(driver, delay)
         driver.get(url)
+        time.sleep(3)
         partidos_container = wait.until(
             EC.presence_of_all_elements_located((
                 By.CLASS_NAME, class_name)))
@@ -355,6 +356,7 @@ def get_pocker_bit(home, visit, alg_win, quix_jornada, dict_return):
 
 def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
     print("start william:")
+    bQuiniela = False if quix_jornada is null else True
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -374,7 +376,7 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
                 visit_read = unidecode.unidecode(teams[1].strip().upper())
 
                 # viene de quiniela
-            if quix_jornada is not null:
+            if bQuiniela:
                 for match in quix_jornada:
                     uni_home_william = WILLIAM[unidecode.unidecode(match['local'].upper())]
                     uni_visit_william = WILLIAM[unidecode.unidecode(match['visitante'].upper())]
@@ -409,10 +411,12 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
             pass            
 
     print("end william:")
-    dict_return['william'] = obj_return
+    if not bQuiniela:
+        dict_return['william'] = obj_return
 
 def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
     print("start bwin:")
+    bQuiniela = False if quix_jornada is null else True
     obj_return = {
         'valor_1' :'-', 'valor_2': '-', 'valor_x':'-', 
         'found': 'False',
@@ -429,7 +433,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
             visit_read = unidecode.unidecode(teams[1].text.strip().upper())
 
             # viene de quiniela
-            if quix_jornada is not null:
+            if bQuiniela:
                 for match in quix_jornada:
                     uni_home_bwin = BWIN[unidecode.unidecode(match['local'].upper())]
                     uni_visit_bwin = BWIN[unidecode.unidecode(match['visitante'].upper())]
@@ -447,6 +451,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
                         valor_2 = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
                         match['bwin'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
 
+                        dict_return['bwin'].append(match)
                         break
 
             else:
@@ -460,13 +465,15 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
                     obj_return['found'] = 'True'
                     obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
 
+                    dict_return['bwin'] = obj_return
                     break                
 
         except Exception as ex:
             pass
 
     print("end bwin:")
-    dict_return['bwin'] = obj_return
+    if not bQuiniela:
+        dict_return['bwin'] = obj_return
 
 def runInParallel(home, visit, alg_win, quiniela=null):
     manager = Manager()

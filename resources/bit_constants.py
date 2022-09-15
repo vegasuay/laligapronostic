@@ -114,7 +114,8 @@ AS = {
 'Valencia' : 'Valencia',
 'Getafe' : 'Getafe',
 'Real Valladolid' : 'Valladolid',
-'Almería' : 'Almeria'
+'Almería' : 'Almeria',
+'Alaves' : 'Alaves'
 }
 
 BWIN_URL= 'https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829'

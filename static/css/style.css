@@ -277,6 +277,15 @@
         padding: 16px 8px;
         margin-top: -4px;
     }
+
+    .tg-mobile{
+        bottom: -6px;
+    }
+
+    .toggle-apuestas {
+        position: initial !important;
+        margin-left: 5px;
+    }
 }
 
 .search-bar .form-group {
@@ -366,6 +375,7 @@
     }
     .mt-mobile5 {
         margin-top: 5px !important;
+        width: 50% !important;
     }
     .btn {
         font-size: 10px !important;
@@ -843,3 +853,74 @@ hr.vertical {
     background: #343a40 !important;
     font-family: initial !important;
 }
+
+/* The Toggle - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 22px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 4px;
+    bottom: 1px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    box-shadow: 0 0 0.2rem 2px rgb(0 0 0 / 57%);
+  }
+  
+  input:checked + .slider {
+    background-color: #f3f3ae;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #f3f3ae;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+  .toggle-apuestas {
+    position: absolute;
+    bottom: -4px;
+    color: #6c757d;
+    font-size: smaller;
+  }

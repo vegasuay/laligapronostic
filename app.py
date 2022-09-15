@@ -1,7 +1,8 @@
 from re import split
 from flask import Flask, render_template
 from resources import \
-    get_current_teams, get_current_clasification, get_current_jornada, get_next_jornada_index, runInParallel
+    get_current_teams, get_current_clasification, get_current_jornada, \
+        get_next_jornada_index, runInParallel, get_bwin_bit
 from flask import request
 from resources import data
 import unidecode
@@ -159,7 +160,7 @@ def quiniela():
     jor_actual=int(obj_jornada['current_jornada'].split(" ")[1])
 
     #bwinValue, willianValue, pokerValue  = data.multiTasks(None, None, None, obj_jornada['array_resultados'])
-    bwinValue, willianValue, pokerValue = runInParallel(None, None, None, obj_jornada['array_resultados'])
+    get_bwin_bit(None, None, None, obj_jornada['array_resultados'], None)
 
     # num of jornadas
     jornadas = list(range(1,obj_jornada['total_jornadas']))
