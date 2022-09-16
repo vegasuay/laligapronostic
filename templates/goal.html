@@ -142,11 +142,10 @@
     </div>
 
     <!-- Estadisticas -->
-    <div class="d-flex align-items-center mt-3 mb-3 m-titles">
+    <div class="d-flex align-items-center mt-3 mb-3 m-titles title-goal">
         <i class="material-icons mr-3 h3">mode_edit_outline</i>
         <h3 class="mb-0">Estadisticas Goles</h3>
     </div>
-    <hr>
 
     <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow m-border">
         <div class="row">
@@ -252,11 +251,10 @@
     </div>
 
     <!-- Formula -->
-    <div class="d-flex align-items-center mt-5 mb-3 m-titles">
+    <div class="d-flex align-items-center mt-5 mb-3 m-titles title-goal">
         <i class="material-icons mr-3 h3">euro</i>
         <h3 class="mb-0">Fórmula Aplicada</h3>
     </div>
-    <hr>
 
     <div class="bd-callout bd-callout-info">
         <p>
@@ -274,7 +272,7 @@
         <div class="row">
             <div class="col-md-4 position-relative">
                 <div class="text-center">
-                    <img src="../static/images/poisson_formula.png">
+                    <img class="for-mob" src="../static/images/poisson_formula.png">
                 </div>
                 <hr class="vertical dark">
             </div>
@@ -381,11 +379,10 @@
     </div>
 
     <!-- Grafico -->
-    <div class="d-flex align-items-center mt-5 mb-3 m-titles">
+    <div class="d-flex align-items-center mt-5 mb-3 m-titles title-goal">
         <i class="material-icons mr-4 h3">leaderboard</i>
-        <h3 class="mb-0">Distribucion Probabilidades</h3>
+        <h3 class="mb-0">Probabilidad Goles</h3>
     </div>
-    <hr>
 
     <canvas id="myChart" height="100" class="border-radius-xl m-border"></canvas>
     <!-- Chart -->
@@ -441,11 +438,10 @@
     </script>
 
     <!-- encuestas -->
-    <div class="d-flex align-items-center mt-5 mb-3 m-titles">
+    <div class="d-flex align-items-center mt-5 mb-3 m-titles title-goal">
         <i class="material-icons mr-4 h3">leaderboard</i>
         <h3 class="mb-0">Estado Encuestas</h3>
     </div>
-    <hr>
 
     <div class="col-12 col-lg-6 col-xl z-index-2 border-radius-xl mt-n10 mx-auto mb-3 my-2 py-3 blur shadow m-border">
         <div class="row">
@@ -459,7 +455,7 @@
                         </div>
                     </div>
                     
-                    <div class="card-toolbar">
+                    <div class="card-toolbar card-apuesta">
                         <span class="badge badge-light-nofound me-auto px-4 py-3
                         {{'badge-light-success' if data.bwin['found']=='True' }}
                         {{'badge-light-error' if data.bwin['text'] == 'Diferencia'}}">{{data.bwin['text']}}</span>
@@ -491,7 +487,7 @@
                         </div>
                     </div>
                     
-                    <div class="card-toolbar">
+                    <div class="card-toolbar card-apuesta">
                         <span class="badge badge-light-nofound me-auto px-4 py-3
                         {{'badge-light-success' if data.william['found']=='True' }}
                         {{'badge-light-error' if data.william['text'] == 'Diferencia'}}">{{data.william['text']}}</span>
@@ -548,11 +544,10 @@
     </div>
 
     <!-- Tabla resultado -->
-    <div class="d-flex align-items-center mt-5 mb-3 m-titles">
+    <div class="d-flex align-items-center mt-5 mb-3 m-titles title-goal">
         <i class="material-icons mr-4 h3">table_chart</i>
         <h3 class="mb-0">Histórico Partidos</h3>
     </div>
-    <hr>
 
     <div class="d-flex col-lg-12 col-xl-12 padbutton20">
         <div class="flex-fill w-100 card shadow-sm">
@@ -576,7 +571,7 @@
                         </div>
                     </div>
                 </div>
-                <h5 class="mb-0 card-title">Histórico de partidos por jornadas</h5>
+                <h5 class="mb-0 card-title">partidos temporadas</h5>
             </div>
             <!-- render dataframe -->
             {% for table in tables %}

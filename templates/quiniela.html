@@ -3,11 +3,11 @@
 {% block content %}
 <div class="container width-mobil pt-3">
     <!-- Navegacion jornadas  p-3 p-lg-1 pl-lg-4-->
-    <div class="search-bar bck-jor p-2">
+    <div class="search-bar search-qui bck-jor p-2">
         <form action="{{ url_for('quiniela')}}">
             <div class="row">
                 <div class="d-flex form-group col-4 jorn-anterior">
-                    <button name="btnjornada-ant" value="{{int_jornada - 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl">
+                    <button name="btnjornada-ant" value="{{int_jornada - 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl btnjornada">
                     Jornada {{int_jornada - 1}}
                     </button>
                 </div>
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="d-flex form-group col-4 jorn-posterior">
-                    <button name="btnjornada-sig" value="{{int_jornada + 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl">
+                    <button name="btnjornada-sig" value="{{int_jornada + 1}}" class="btn btn-outline-secondary btn-block h-100 rounded-xl btnjornada">
                         Jornada {{int_jornada + 1}}
                     </button>
                 </div>
@@ -65,15 +65,10 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="tdmobil"></th>
-                            <th scope="col">Local</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col">Visitante</th>
-                            <th colspan="3" scope="col">Pronostico</th>
+                            <th scope="col" colspan="3">Local</th>
+                            <th scope="col" colspan="3">Visita</th>
+                            <th colspan="3" scope="col" style="width: 55px">Pro.</th>
                             <th scope="col" class="thbwin"><img src="../static/images/bwin_s.png" style="width: 28px;"></th>
-                            <th scope="col" class="thwilliam"><img src="../static/images/william.jpeg" style="width: 28px;" ></th>
                             <th scope="col" class="tdmobil">Acierto?</th>
                         </tr>
                     </thead>
@@ -83,7 +78,7 @@
                             <th scope="row" class="tdmobil">{{resultado.count}}</th>
                             <td class="lt-right">{{resultado.local}}</td>
                             <td><img src="../static/images/{{resultado.local}}.png"></td>
-                            <td class="td-result">{{resultado.result_local}}</td>
+                            <td class="td-result" style="width: 10px;">{{resultado.result_local}}</td>
                             <td class="td-result">{{resultado.result_visita}}</td>
                             <td><img src="../static/images/{{resultado.visitante}}.png"></td>
                             <td class="td-border-right lt-left">{{resultado.visitante}}</td>
@@ -107,7 +102,6 @@
                                 </div>
                             </td>
                             <td><img src="../static/images/{{resultado.bwin}}.png" style="height: 30px;" ></td>
-                            <td><img src="../static/images/{{resultado.william}}.png" style="height: 30px;" ></td>
                             <td class="tdmobil 
                                 {{'acierto' if resultado.acierto }} 
                                 {{'fallo' if resultado.acierto == False}}">

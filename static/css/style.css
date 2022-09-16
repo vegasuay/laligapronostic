@@ -362,6 +362,15 @@
     text-align: end;
 }
 
+.btnjornada {
+    background: ghostwhite !important;
+    border: solid 2px cornflowerblue !important;
+}
+
+.search-qui {
+    background: #495057bd;
+}
+
 /*quiniela*/
 @media only screen and (max-width: 768px) {
     .table .tdbody-light td {
@@ -436,6 +445,23 @@
     .table-result th:nth-child(1) {
         display: none;
     }
+
+    .for-mob{
+        width: 200px;
+    }
+
+    .card-apuesta{
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+}
+
+.title-goal {
+    background: cadetblue;
+    color: azure !important;
+    font-weight: bolder;
+    margin-bottom: -16px !important;
+    border-bottom: 2px solid #117a8b;
 }
 
 .padbutton20{
