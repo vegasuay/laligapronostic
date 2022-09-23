@@ -84,20 +84,21 @@
                             <td class="td-border-right lt-left">{{resultado.visitante}}</td>
                             <!--gana local-->
                             <td class="td-bg-pronost {{'acierto' if resultado.acierto }}">
-                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_local > resultado.pronost_visita }}">
+                                <!--div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_local > resultado.pronost_visita }}"-->
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.porc_win == 'home' }}">
                                     <span>1</span>
                                 </div>
                             </td>
                             <!--empate-->
                             <td class="td-bg-pronost {{'acierto' if resultado.acierto }}">
-                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_visita == resultado.pronost_local }}">
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.porc_win == 'draw' }}">
                                     <span>X</span>
                                 </div>
                             </td>
                             <!--gana visita-->
                             <td class="td-border-right td-bg-pronost 
                                 {{'acierto' if resultado.acierto }}">
-                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.pronost_visita > resultado.pronost_local }}">
+                                <div class="{{'pronost icon icon-shape icon-sm shadow-sm border-radius-md text-center d-flex align-items-center justify-content-center' if resultado.porc_win == 'away' }}">
                                     <span>2</span>
                                 </div>
                             </td>

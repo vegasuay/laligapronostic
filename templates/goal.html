@@ -4,8 +4,8 @@
 <div class="container width-mobil pt-3">
     <!-- card equipos -->
     <div class="card-deck mb-2 text-center">
-        <div class="card {{'border-success' if data.puntos_local > data.puntos_visita }} mb-4 shadow">
-            <div class="card-header {{'headerWin' if data.puntos_local > data.puntos_visita }}">
+        <div class="card {{'border-success' if data.puntos_local > data.puntos_visita or data.porc_win == 'draw' }} mb-4 shadow">
+            <div class="card-header {{'headerWin' if data.puntos_local > data.puntos_visita or data.porc_win == 'draw' }}">
                 <h4 class="my-0 font-weight-normal">
                     <img src="../static/images/{{data.home}}.png">
                     Equipo Local
@@ -72,8 +72,8 @@
             
         </div>
 
-        <div class="card {{'border-success' if data.puntos_visita > data.puntos_local }} mb-4 shadow">
-            <div class="card-header {{'headerWin' if data.puntos_visita > data.puntos_local }}">
+        <div class="card {{'border-success' if data.puntos_visita > data.puntos_local or data.porc_win == 'draw'}} mb-4 shadow">
+            <div class="card-header {{'headerWin' if data.puntos_visita > data.puntos_local or data.porc_win == 'draw' }}">
                 <h4 class="my-0 font-weight-normal">
                     <img src="../static/images/{{data.visit}}.png">
                     Equipo Visitante

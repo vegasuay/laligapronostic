@@ -32,6 +32,7 @@ def goal():
     league = data.League()
     home = request.form['selecthome']
     visit = request.form['selectvisit']
+    bApuestas = True if request.form.get("chapuestas") else False
 
     dataframe_table = league.get_table_result(home, visit)
     league.calculate_strength()
@@ -50,7 +51,9 @@ def goal():
     uni_home = unidecode.unidecode(home)
     uni_visit= unidecode.unidecode(visit)    
     
-    bwinValue, willianValue, pokerValue = runInParallel(uni_home.upper(), uni_visit.upper(), porc_win)
+    bwinValue, willianValue, pokerValue = None, None, None
+    if bApuestas:
+        bwinValue, willianValue, pokerValue = runInParallel(uni_home.upper(), uni_visit.upper(), porc_win)
 
     # scraping table clasification
     pos_local= wins_local= lose_local= emp_local= pts_local = jug_local = \

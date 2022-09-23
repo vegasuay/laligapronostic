@@ -203,6 +203,12 @@ def get_current_jornada(jornada='none', cLeague=None):
             find_team(strVisita))
 
         # calcular acierto o fallo
+        porc_win = 'draw'
+        if (cLeague.prob_draw > cLeague.prob_home and cLeague.prob_draw > cLeague.prob_away):
+            porc_win = 'draw'
+        elif (cLeague.prob_home > cLeague.prob_away):
+            porc_win = 'home'
+        else: porc_win = 'away'
         acierto = False
         icono = 'close'
         try:
@@ -230,6 +236,7 @@ def get_current_jornada(jornada='none', cLeague=None):
             'result_visita': result_visita,
             'pronost_local': points_home,
             'pronost_visita': points_away,
+            'porc_win': porc_win,
             'acierto': acierto,
             'icono': icono,
             'count': idx + 1,
@@ -383,16 +390,11 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
 
                     if home_read == uni_home_william and visit_read == uni_visit_william:
                         apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
-                        porc_win = 'draw'
-                        if (match['pronost_local'] > match['pronost_visita']):
-                            porc_win = 'home'
-                        elif (match['pronost_local'] < match['pronost_visita']):
-                            porc_win = 'away'
-
+                        
                         valor_1 = apuestas[0].text.strip()
                         valor_x = apuestas[1].text.strip()
                         valor_2 = apuestas[2].text.strip()
-                        match['william'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
+                        match['william'] = confirmar_apuestas(valor_1,valor_x, valor_2, match['porc_win'])
 
                         break
             else:
@@ -440,16 +442,17 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
 
                     if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
                         apuestas = partido.find_elements_by_class_name("option-indicator")
+                        """
                         porc_win = 'draw'
                         if (match['pronost_local'] > match['pronost_visita']):
                             porc_win = 'home'
                         elif (match['pronost_local'] < match['pronost_visita']):
                             porc_win = 'away'
-
+                        """
                         valor_1 = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
                         valor_x = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
                         valor_2 = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
-                        match['bwin'] = confirmar_apuestas(valor_1,valor_x, valor_2, porc_win)
+                        match['bwin'] = confirmar_apuestas(valor_1,valor_x, valor_2, match['porc_win'])
 
                         dict_return['bwin'].append(match)
                         break
@@ -465,7 +468,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
                     obj_return['found'] = 'True'
                     obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
 
-                    dict_return['bwin'] = obj_return
+                    #dict_return['bwin'] = obj_return
                     break                
 
         except Exception as ex:
