@@ -32,7 +32,7 @@ def goal():
     league = data.League()
     home = request.form['selecthome']
     visit = request.form['selectvisit']
-    bApuestas = True if request.form.get("chapuestas") else False
+    bApuestas = True if (request.form.get("chapuestas") or request.form.get("inApuestas")) else False
 
     dataframe_table = league.get_table_result(home, visit)
     league.calculate_strength()
