@@ -1,33 +1,44 @@
 BWIN = {
-    'GETAFE':'GETAFE CF',                
+    'GETAFE':'GETAFE CF',
+    'GETAFE':'GETAFE',                
     'LEVANTE':'LEVANTE UD',
     'BETIS':'REAL BETIS',
     'REAL MADRID':'REAL MADRID',
     'ESPANOL':'RCD ESPANYOL',
+    'ESPANYOL': 'RCD ESPANYOL',
     'ATH MADRID':'ATLETICO MADRID',
+    'ATLETICO': 'ATLETICO MADRID',
     'SOCIEDAD':'REAL SOCIEDAD',
+    'R. SOCIEDAD':'REAL SOCIEDAD',
     'VALLECANO':'RAYO VALLECANO',
+    'RAYO': 'RAYO VALLECANO',
     'GRANADA':'GRANADA CF',
+    'GRANADA':'GRANADA',
     'ATH BILBAO':'ATHLETIC CLUB',
+    'ATHLETIC': 'ATHLETIC CLUB',
     'CADIZ':'CADIZ CF',
+    'CADIZ':'CADIZ',
     'MALLORCA':'RCD MALLORCA',
+    'MALLORCA':'MALLORCA',
     'VILLARREAL':'VILLARREAL',
     'VALENCIA':'VALENCIA CF',
+    'VALENCIA':'VALENCIA',
     'BARCELONA':'FC BARCELONA',
     'ELCHE':'ELCHE CF',
     'SEVILLA':'SEVILLA FC',
+    'SEVILLA':'SEVILLA',
     'CELTA':'RC CELTA DE VIGO',
+    'CELTA':'CELTA DE VIGO',
     'ALAVES':'DEPORTIVO ALAVES',
+    'ALAVES':'ALAVES',
     'OSASUNA':'CA OSASUNA',
     'ALMERIA':'UD ALMERIA',
+    'ALMERIA':'ALMERIA',
     'GIRONA':'GIRONA FC',
+    'GIRONA':'GIRONA',
     'VALLADOLID':'REAL VALLADOLID',
-    'ESPANYOL': 'RCD ESPANYOL',
-    'RAYO': 'RAYO VALLECANO',
     'REAL VALLADOLID': 'REAL VALLADOLID',
-    'ATHLETIC': 'ATHLETIC CLUB',
-    'ATLETICO': 'ATLETICO MADRID',
-    'R. SOCIEDAD':'REAL SOCIEDAD'
+    'LAS PALMAS':'LAS PALMAS'
 }
 
 WILLIAM = {
@@ -41,6 +52,7 @@ WILLIAM = {
     'VALLECANO':'RAYO VALLECANO',
     'GRANADA':'GRANADA',
     'ATH BILBAO':'ATHLETIC CLUB',
+    'ATHLETIC': 'ATHLETIC CLUB',
     'CADIZ':'CADIZ',
     'MALLORCA':'MALLORCA',
     'VILLARREAL':'VILLARREAL',
@@ -57,9 +69,9 @@ WILLIAM = {
     'ESPANYOL': 'ESPANYOL',
     'RAYO': 'RAYO VALLECANO',
     'REAL VALLADOLID': 'REAL VALLADOLID',
-    'ATHLETIC': 'ATHLETIC CLUB',
     'ATLETICO': 'AT. MADRID',
-    'R. SOCIEDAD':'REAL SOCIEDAD'
+    'R. SOCIEDAD':'REAL SOCIEDAD',
+    'LAS PALMAS':'LAS PALMAS'
 }
 
 POKER = {
@@ -95,27 +107,30 @@ POKER = {
 }
 
 AS = {
-'Celta' : 'Celta',
-'Cádiz' : 'Cadiz',
-'Mallorca' : 'Mallorca',
-'Girona' : 'Girona',
-'Real Madrid' : 'Real Madrid',
-'Betis' : 'Betis',
-'R. Sociedad' : 'Sociedad',
-'Atlético' : 'Ath Madrid',
-'Sevilla' : 'Sevilla',
-'Barcelona' : 'Barcelona',
-'Osasuna' : 'Osasuna',
-'Rayo' : 'Vallecano',
-'Athletic' : 'Ath Bilbao',
-'Espanyol' : 'Espanol',
-'Villarreal' : 'Villarreal',
-'Elche' : 'Elche',
-'Valencia' : 'Valencia',
-'Getafe' : 'Getafe',
-'Real Valladolid' : 'Valladolid',
-'Almería' : 'Almeria',
-'Alaves' : 'Alaves'
+    'Celta' : 'Celta',
+    'Cádiz' : 'Cadiz',
+    'Mallorca' : 'Mallorca',
+    'Girona' : 'Girona',
+    'Real Madrid' : 'Real Madrid',
+    'Betis' : 'Betis',
+    'R. Sociedad' : 'Sociedad',
+    'Atlético' : 'Ath Madrid',
+    'Sevilla' : 'Sevilla',
+    'Barcelona' : 'Barcelona',
+    'Osasuna' : 'Osasuna',
+    'Rayo' : 'Vallecano',
+    'Athletic' : 'Ath Bilbao',
+    'Espanyol' : 'Espanol',
+    'Villarreal' : 'Villarreal',
+    'Elche' : 'Elche',
+    'Valencia' : 'Valencia',
+    'Getafe' : 'Getafe',
+    'Real Valladolid' : 'Valladolid',
+    'Almería' : 'Almeria',
+    'Alaves' : 'Alaves',
+    'Las Palmas': 'Las Palmas',
+    'Alavés': 'Alaves',
+    'Granada': 'Granada'    
 }
 
 BWIN_URL= 'https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829'
@@ -123,5 +138,5 @@ WILLIAM_URL = 'https://sports.williamhill.es/betting/es-es/football/competitions
 POKER_URL = 'https://www.pokerstarssports.es/#/soccer/competitions/10679937'
 FOOTBALL_DATA_URL = "https://www.football-data.co.uk/mmz4281/"
 XCORES_DATA_URL = "https://www.xscores.com/soccer/spain/primera-division/standings"
-TU_LIGA = "https://www.siguetuliga.com/liga/nacional-primera-division-liga-santander"
+TU_LIGA = "https://www.siguetuliga.com/liga/nacional-primera-division-laliga-ea-sports/clasificacion"
 RESULTADOS_AS = "https://resultados.as.com/resultados/futbol/primera/"

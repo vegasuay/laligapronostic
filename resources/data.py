@@ -257,10 +257,12 @@ def _get_chromeoptions(class_name, url):
 
     if (os.environ.get("PRODUCTION")):
         # para heroku
+        print("heroku")
         driver = webdriver.Chrome(executable_path=os.environ.get(
             "CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     else:
         # para desarrollo
+        print("desarrollo")
         driver = webdriver.Chrome(
             'chromedriver', chrome_options=chrome_options)
 
