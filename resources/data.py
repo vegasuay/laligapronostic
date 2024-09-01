@@ -22,7 +22,7 @@ from resources.bit_constants import \
 
 #driver = webdriver.Chrome()
 chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+#chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN") //TODO: quitar para heroku
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
@@ -258,13 +258,13 @@ def _get_chromeoptions(class_name, url):
     if (os.environ.get("PRODUCTION")):
         # para heroku
         print("heroku")
+        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         driver = webdriver.Chrome(executable_path=os.environ.get(
-            "CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+            "CHROMEDRIVER_PATH"), options=chrome_options)
     else:
         # para desarrollo
         print("desarrollo")
-        driver = webdriver.Chrome(
-            'chromedriver', chrome_options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options)
 
     # div partidos
     # waiting for partidos to load
@@ -374,13 +374,13 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
     uni_visit_william = WILLIAM[visit] if visit is not None else null
 
     partidos_container = _get_chromeoptions("football-app", WILLIAM_URL)     
-    for partido in partidos_container[0].find_elements_by_css_selector('article.sp-o-market'):
+    for partido in partidos_container[0].find_elements(By.CSS_SELECTOR, 'article.sp-o-market'):
         try:
 
-            title= partido.find_elements_by_css_selector('main.sp-o-market__title')
-            if (title[0].text.__contains__(' ₋ ')):
+            title= partido.find_element(By.CSS_SELECTOR, 'main.sp-o-market__title')
+            if (title.text.__contains__(' ₋ ')):
                 # div equipos
-                teams = title[0].text.split(' ₋ ')
+                teams = title.text.split(' ₋ ')
                 home_read = unidecode.unidecode(teams[0].strip().upper())
                 visit_read = unidecode.unidecode(teams[1].strip().upper())
 
@@ -391,7 +391,7 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
                     uni_visit_william = WILLIAM[unidecode.unidecode(match['visitante'].upper())]
 
                     if home_read == uni_home_william and visit_read == uni_visit_william:
-                        apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
+                        apuestas = partido.find_elements(By.CSS_SELECTOR, 'button.sp-betbutton')
                         
                         valor_1 = apuestas[0].text.strip()
                         valor_x = apuestas[1].text.strip()
@@ -402,7 +402,7 @@ def get_william_bit(home, visit, alg_win, quix_jornada, dict_return):
             else:
                 # partido encontrado
                 if home_read == uni_home_william and visit_read == uni_visit_william:
-                    apuestas = partido.find_elements_by_css_selector('button.sp-betbutton')
+                    apuestas = partido.find_elements(By.CSS_SELECTOR, 'button.sp-betbutton')
                     
                     obj_return['valor_1'] = apuestas[0].text.strip()
                     obj_return['valor_x'] = apuestas[1].text.strip()
@@ -432,7 +432,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
     for partido in _get_chromeoptions("grid-event-wrapper", BWIN_URL):
         try:
             # div equipos
-            teams = partido.find_elements_by_class_name('participant')
+            teams = partido.find_elements(By.CLASS_NAME, "participant")
             home_read = unidecode.unidecode(teams[0].text.strip().upper())
             visit_read = unidecode.unidecode(teams[1].text.strip().upper())
 
@@ -443,7 +443,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
                     uni_visit_bwin = BWIN[unidecode.unidecode(match['visitante'].upper())]
 
                     if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
-                        apuestas = partido.find_elements_by_class_name("option-indicator")
+                        apuestas = partido.find_elements(By.CLASS_NAME,"option-indicator")
                         """
                         porc_win = 'draw'
                         if (match['pronost_local'] > match['pronost_visita']):
@@ -451,9 +451,9 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
                         elif (match['pronost_local'] < match['pronost_visita']):
                             porc_win = 'away'
                         """
-                        valor_1 = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
-                        valor_x = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
-                        valor_2 = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
+                        valor_1 = apuestas[0].find_element(By.CLASS_NAME,'option-value').text.strip()
+                        valor_x = apuestas[1].find_element(By.CLASS_NAME,'option-value').text.strip()
+                        valor_2 = apuestas[2].find_element(By.CLASS_NAME,'option-value').text.strip()
                         match['bwin'] = confirmar_apuestas(valor_1,valor_x, valor_2, match['porc_win'])
 
                         dict_return['bwin'].append(match)
@@ -462,11 +462,11 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
             else:
                 # viene de pronostico partido
                 if home_read == uni_home_bwin and visit_read == uni_visit_bwin:
-                    apuestas = partido.find_elements_by_class_name("option-indicator")
+                    apuestas = partido.find_elements(By.CLASS_NAME, "option-indicator")
                     
-                    obj_return['valor_1'] = apuestas[0].find_elements_by_class_name('option-value')[0].text.strip()
-                    obj_return['valor_x'] = apuestas[1].find_elements_by_class_name('option-value')[0].text.strip()
-                    obj_return['valor_2'] = apuestas[2].find_elements_by_class_name('option-value')[0].text.strip()
+                    obj_return['valor_1'] = apuestas[0].find_element(By.CLASS_NAME,'option-value').text.strip()
+                    obj_return['valor_x'] = apuestas[1].find_element(By.CLASS_NAME,'option-value').text.strip()
+                    obj_return['valor_2'] = apuestas[2].find_element(By.CLASS_NAME,'option-value').text.strip()
                     obj_return['found'] = 'True'
                     obj_return['text'] = confirmar_apuestas(obj_return['valor_1'],obj_return['valor_x'], obj_return['valor_2'], alg_win)
 
@@ -483,7 +483,7 @@ def get_bwin_bit(home, visit, alg_win, quix_jornada, dict_return):
 def runInParallel(home, visit, alg_win, quiniela=null):
     manager = Manager()
     dict_return = manager.dict()
-    funcs = [get_bwin_bit, get_william_bit]
+    funcs = [get_bwin_bit,get_william_bit]
 
     proc = []
     for f in funcs:

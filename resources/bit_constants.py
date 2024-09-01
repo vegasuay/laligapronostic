@@ -38,7 +38,8 @@ BWIN = {
     'GIRONA':'GIRONA',
     'VALLADOLID':'REAL VALLADOLID',
     'REAL VALLADOLID': 'REAL VALLADOLID',
-    'LAS PALMAS':'LAS PALMAS'
+    'LAS PALMAS':'LAS PALMAS',
+    'LEGANES':'CD LEGANES'
 }
 
 WILLIAM = {
@@ -71,7 +72,8 @@ WILLIAM = {
     'REAL VALLADOLID': 'REAL VALLADOLID',
     'ATLETICO': 'AT. MADRID',
     'R. SOCIEDAD':'REAL SOCIEDAD',
-    'LAS PALMAS':'LAS PALMAS'
+    'LAS PALMAS':'LAS PALMAS',
+    'LEGANES':'LEGANES'
 }
 
 POKER = {
@@ -103,7 +105,8 @@ POKER = {
     'REAL VALLADOLID': 'VALLADOLID',
     'ATHLETIC': 'ATHLETIC DE BILBAO',
     'ATLETICO': 'ATLETICO DE MADRID',
-    'R. SOCIEDAD':'REAL SOCIEDAD'
+    'R. SOCIEDAD':'REAL SOCIEDAD',
+    'LEGANES':'LEGANES'
 }
 
 AS = {
@@ -130,7 +133,8 @@ AS = {
     'Alaves' : 'Alaves',
     'Las Palmas': 'Las Palmas',
     'Alavés': 'Alaves',
-    'Granada': 'Granada'    
+    'Granada': 'Granada',
+    'Leganés': 'Leganes' 
 }
 
 BWIN_URL= 'https://sports.bwin.es/es/sports/f%C3%BAtbol-4/apuestas/espa%C3%B1a-28/laliga-102829'
@@ -138,5 +142,5 @@ WILLIAM_URL = 'https://sports.williamhill.es/betting/es-es/football/competitions
 POKER_URL = 'https://www.pokerstarssports.es/#/soccer/competitions/10679937'
 FOOTBALL_DATA_URL = "https://www.football-data.co.uk/mmz4281/"
 XCORES_DATA_URL = "https://www.xscores.com/soccer/spain/primera-division/standings"
-TU_LIGA = "https://www.siguetuliga.com/liga/nacional-primera-division-laliga-ea-sports/clasificacion"
+TU_LIGA = "https://www.siguetuliga.com/liga/futbol-nacional-primera-division-laliga-ea-sports/clasificacion"
 RESULTADOS_AS = "https://resultados.as.com/resultados/futbol/primera/"
